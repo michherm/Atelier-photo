@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Atelier Photo · Elisa</title>
+<style>
+  :root{
+    --ink:#5b3a52;            /* aubergine doux (Schrift wie Plakat) */
+    --paper:#f7f0e3;          /* cremefarbenes Aquarellpapier */
+    --paper-2:#efe4d2;
+    --line:#e3d3c0;
+    --accent:#c64b86;         /* magenta wie "Elisa"-Kalligrafie */
+    --accent-2:#e08aa9;       /* zartrosa */
+    --accent-soft:#f3d9e4;
+    --teal:#7c6bab;           /* lavendel-violett */
+    --gold:#c69a48;           /* goldakzent "18e" */
+    --blue:#6f86b8;           /* aquarell-blau */
+    --muted:#9a7d8e;
+    --ok:#5b9a78;
+    --warn:#cf8a4a;
+    --shadow:0 2px 0 rgba(198,75,134,.05), 0 16px 40px -22px rgba(110,60,90,.38);
+    --font-disp:Georgia,"Hoefler Text","Times New Roman",serif;
+    --font-body:-apple-system,"Avenir Next","Avenir","Segoe UI",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;
+    background:
+      radial-gradient(640px 440px at 88% 4%, #f7d9e6 0%, transparent 52%),
+      radial-gradient(560px 420px at 6% 30%, #dfe4f3 0%, transparent 50%),
+      radial-gradient(600px 460px at 50% 100%, #ece1f2 0%, transparent 52%),
+      var(--paper);
+    background-attachment:fixed;
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.6;
+  }
+  .wrap{max-width:920px;margin:0 auto;padding:28px 20px 90px}
+
+  /* ---------- Header ---------- */
+  header.top{
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:16px;border-bottom:2px dashed var(--accent-2);padding-bottom:16px;margin-bottom:8px;
+    flex-wrap:wrap;
+  }
+  .brand small{
+    display:block;font-family:var(--font-body);font-weight:700;
+    letter-spacing:.16em;text-transform:uppercase;font-size:11px;color:var(--accent);
+    margin-bottom:6px;
+  }
+  .brand h1{margin:0;font-family:var(--font-disp);font-size:clamp(32px,7vw,52px);line-height:.95;
+    font-weight:600;letter-spacing:-.01em;font-style:italic;
+    background:linear-gradient(100deg,var(--accent),var(--accent-2) 50%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+  .brand h1 em{font-style:normal;color:var(--teal);-webkit-text-fill-color:var(--teal)}
+  .aperture-mark{
+    width:48px;height:48px;flex:0 0 auto;color:var(--accent);
+  }
+  /* deutsch-französische Herzchen wie im Plakat */
+  .flag-heart{display:inline-block;width:15px;height:14px;vertical-align:-2px;
+    clip-path:path("M7.5 13.5 C2 9.5 0 6.5 0 3.8 A3.8 3.8 0 0 1 7.5 3.2 A3.8 3.8 0 0 1 15 3.8 C15 6.5 13 9.5 7.5 13.5 Z");}
+  .flag-heart.fr{background:linear-gradient(90deg,#3b5aa8 0 33%,#f2eee6 33% 66%,#d04a5a 66%)}
+  .flag-heart.de{background:linear-gradient(90deg,#2a2a2a 0 33%,#d84a4a 33% 66%,#e3b23c 66%)}
+  .dedicace{font-family:var(--font-disp);font-style:italic;font-size:15px;color:var(--muted);
+    margin:10px 0 0;max-width:60ch}
+  .dedicace span{color:var(--accent);font-weight:500;white-space:nowrap}
+
+  /* ---------- Tabs ---------- */
+  nav.tabs{display:flex;gap:0;margin:22px 0 26px;flex-wrap:wrap}
+  nav.tabs button{
+    font-family:inherit;font-size:15px;cursor:pointer;background:transparent;border:none;
+    padding:11px 18px;color:var(--muted);border-bottom:2px solid transparent;
+    display:flex;align-items:center;gap:9px;
+  }
+  nav.tabs button .n{
+    font-family:ui-monospace,monospace;font-size:11px;border:1px solid var(--line);
+    border-radius:50%;width:22px;height:22px;display:grid;place-items:center;color:var(--muted);
+  }
+  nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent);font-weight:600}
+  nav.tabs button[aria-selected="true"] .n{border-color:var(--accent);color:var(--accent);background:#fff}
+  nav.tabs button:focus-visible{outline:2px solid var(--teal);outline-offset:3px;border-radius:4px}
+
+  section.panel{display:none;animation:fade .4s ease}
+  section.panel.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  .lead{font-size:18px;color:var(--muted);max-width:60ch;margin:0 0 26px}
+  h2.sec{font-family:var(--font-disp);font-size:28px;margin:0 0 4px;font-weight:600;letter-spacing:-.01em}
+  .eyebrow{font-family:var(--font-body);font-weight:700;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:8px}
+
+  /* ---------- Studio (triangle) ---------- */
+  .studio{display:block}
+
+  /* Sucher bleibt oben kleben, Regler scrollen darunter weg */
+  .viewstack{position:sticky;top:0;z-index:20;background:var(--paper);padding:8px 0 12px}
+  .viewfinder{
+    position:relative;border-radius:14px;overflow:hidden;background:#000;
+    box-shadow:var(--shadow);border:1px solid var(--line);aspect-ratio:3/2;
+  }
+  @media(max-width:760px){
+    .viewfinder{aspect-ratio:4/3}
+  }
+  /* iPad & Desktop: zweispaltig, Sucher links sticky */
+  @media(min-width:820px){
+    .studio{display:grid;grid-template-columns:1.05fr .95fr;gap:26px;align-items:start}
+    .viewstack{position:sticky;top:12px}
+    .viewfinder{aspect-ratio:3/2}
+    .presets{grid-column:1 / -1}
+  }
+
+  /* Quell-Umschalter: Demo / Foto laden / Pixel-Kamera */
+  .source{display:flex;gap:6px;margin:0 0 8px;background:var(--paper-2);padding:4px;border-radius:10px}
+  .source button{flex:1;font-family:inherit;font-size:13px;cursor:pointer;border:none;background:transparent;
+    padding:9px 6px;border-radius:7px;color:var(--muted);display:flex;align-items:center;justify-content:center;gap:6px}
+  .source button[aria-pressed="true"]{background:#fff;color:var(--ink);font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,.12)}
+  .source button:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  .source svg{width:17px;height:17px;flex:0 0 auto}
+  /* eigenes Foto liegt über der Demo-Szene */
+  .photo{position:absolute;inset:0;background-size:cover;background-position:center;background-repeat:no-repeat;
+    display:none}
+  .viewfinder.hasphoto .scene{display:none}
+  .viewfinder.hasphoto .photo{display:block}
+  .scene{position:absolute;inset:0;transition:filter .25s ease, opacity .25s ease}
+  /* La scène : un coucher de soleil simple en CSS, + un sujet net/flou */
+  .sky{position:absolute;inset:0;background:linear-gradient(#163a5f,#3d6ea5 38%,#e9a05b 72%,#f4c98a)}
+  .sun{position:absolute;left:50%;top:58%;width:84px;height:84px;border-radius:50%;
+    transform:translate(-50%,-50%);background:radial-gradient(#fff7e6,#ffd27a 60%,rgba(255,180,90,0) 72%)}
+  .hill{position:absolute;left:0;right:0;bottom:0;height:34%;background:#22324a;border-radius:50% 50% 0 0/22% 22% 0 0}
+  .subject{position:absolute;left:50%;bottom:22%;transform:translateX(-50%);
+    width:42px;height:90px;background:#0d141f;border-radius:14px 14px 6px 6px;transition:filter .25s ease}
+  .subject::after{content:"";position:absolute;left:50%;top:-22px;transform:translateX(-50%);
+    width:30px;height:30px;border-radius:50%;background:#0d141f}
+  .grain{position:absolute;inset:0;pointer-events:none;opacity:0;mix-blend-mode:overlay;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.6'/></svg>");}
+  .hud{position:absolute;left:0;right:0;bottom:0;display:flex;justify-content:space-between;
+    padding:10px 12px;font-family:ui-monospace,monospace;font-size:12px;color:#fff;
+    text-shadow:0 1px 3px rgba(0,0,0,.7);background:linear-gradient(transparent,rgba(0,0,0,.45))}
+  .hud .ev{font-weight:bold}
+  .reticle{position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(transparent 33.33%,rgba(255,255,255,.18) 33.33%,rgba(255,255,255,.18) 33.6%,transparent 33.6%),
+      linear-gradient(transparent 66.66%,rgba(255,255,255,.18) 66.66%,rgba(255,255,255,.18) 66.93%,transparent 66.93%),
+      linear-gradient(90deg,transparent 33.33%,rgba(255,255,255,.18) 33.33%,rgba(255,255,255,.18) 33.6%,transparent 33.6%),
+      linear-gradient(90deg,transparent 66.66%,rgba(255,255,255,.18) 66.66%,rgba(255,255,255,.18) 66.93%,transparent 66.93%);
+    opacity:0;transition:opacity .2s}
+  .viewfinder.grid .reticle{opacity:1}
+
+  /* aperture visual */
+  .controls{display:flex;flex-direction:column;gap:18px}
+  .ctrl{background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px;box-shadow:var(--shadow)}
+  .ctrl .row{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+  .ctrl h3{margin:0;font-size:17px;font-weight:600;display:flex;align-items:center;gap:8px}
+  .ctrl .icon{width:22px;height:22px;color:var(--accent);flex:0 0 auto}
+  .ctrl .val{font-family:ui-monospace,monospace;font-size:15px;color:var(--teal);font-weight:700}
+  .ctrl p.hint{margin:6px 0 0;font-size:13.5px;color:var(--muted)}
+  input[type=range]{width:100%;-webkit-appearance:none;appearance:none;height:4px;border-radius:4px;
+    background:var(--paper-2);margin:14px 0 4px;cursor:pointer}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;
+    background:var(--accent);border:3px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.3)}
+  input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--accent);border:3px solid #fff}
+  input[type=range]:focus-visible{outline:2px solid var(--teal);outline-offset:4px;border-radius:8px}
+
+  .verdict{display:flex;align-items:center;gap:12px;background:#fff;border:1px solid var(--line);
+    border-left:4px solid var(--accent);border-radius:10px;padding:12px 14px;font-size:14.5px}
+  .verdict .badge{font-family:ui-monospace,monospace;font-size:12px;font-weight:700;
+    padding:3px 9px;border-radius:20px;background:var(--paper-2);white-space:nowrap}
+  .verdict.bon{border-left-color:var(--ok)} .verdict.bon .badge{background:#dff0e4;color:var(--ok)}
+  .verdict.attention{border-left-color:var(--warn)} .verdict.attention .badge{background:#fbe9cf;color:var(--warn)}
+
+  .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+  .btn{font-family:inherit;font-size:14px;cursor:pointer;border:1px solid var(--line);background:#fff;
+    border-radius:8px;padding:9px 14px;color:var(--ink);display:inline-flex;align-items:center;gap:7px}
+  .btn:hover{border-color:var(--accent);color:var(--accent)}
+  .btn.primary{background:linear-gradient(100deg,var(--accent),var(--accent-2));color:#fff;border-color:transparent;font-weight:700}
+  [hidden]{display:none!important}
+  .btn.primary:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+  .btn:focus-visible{outline:2px solid var(--teal);outline-offset:3px}
+
+  /* presets */
+  .presets{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-top:26px}
+  .preset{text-align:left;cursor:pointer;background:#fff;border:1px solid var(--line);border-radius:12px;
+    padding:13px 14px;font-family:inherit}
+  .preset:hover{border-color:var(--accent)}
+  .preset b{display:block;font-size:15px;margin-bottom:3px}
+  .preset span{font-size:12.5px;color:var(--muted)}
+  .preset .tag{font-family:ui-monospace,monospace;font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent);display:block;margin-bottom:6px}
+
+  /* ---------- Lessons (compose) ---------- */
+  .lessons{display:flex;flex-direction:column;gap:16px;margin-top:8px}
+  .lesson{background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+  .lesson summary{cursor:pointer;list-style:none;padding:16px 18px;display:flex;align-items:center;gap:14px;
+    font-size:18px;font-weight:600}
+  .lesson summary::-webkit-details-marker{display:none}
+  .lesson summary .num{font-family:ui-monospace,monospace;font-size:13px;color:#fff;background:var(--teal);
+    width:30px;height:30px;border-radius:8px;display:grid;place-items:center;flex:0 0 auto}
+  .lesson summary .chev{margin-left:auto;transition:transform .2s;color:var(--muted)}
+  .lesson[open] summary .chev{transform:rotate(90deg)}
+  .lesson .body{padding:0 18px 18px 62px;color:#2a261f}
+  .lesson .body p{margin:0 0 10px}
+  .lesson .demo{margin:12px 0;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:var(--paper)}
+  .astuce{background:var(--paper-2);border-radius:8px;padding:10px 12px;font-size:14px;margin-top:8px}
+  .astuce b{color:var(--accent)}
+
+  /* Vorlese-Knopf */
+  .speak{margin-left:auto;flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
+    background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--teal)}
+  .speak:hover{border-color:var(--teal);background:var(--paper)}
+  .speak:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  .speak svg{width:17px;height:17px}
+  .speak.on{background:var(--teal);color:#fff}
+
+  /* Exercices */
+  .exo summary{flex-wrap:wrap}
+  .exo .goal{font-family:ui-monospace,monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--accent);width:100%;margin:8px 0 0 44px}
+  .exo .target{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 12px}
+  .exo .chip{font-family:ui-monospace,monospace;font-size:12px;background:var(--paper-2);border-radius:20px;
+    padding:4px 11px;color:var(--ink)}
+  .exo .verify{display:flex;align-items:center;gap:10px;margin-top:6px}
+  .exo .status{font-size:14px;font-weight:600}
+  .exo .status.ok{color:var(--ok)} .exo .status.no{color:var(--warn)}
+
+  /* Analyzer */
+  .analyzer{background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow)}
+  .an-preview{border-radius:10px;overflow:hidden;background:var(--paper-2);min-height:140px;
+    display:grid;place-items:center;color:var(--muted);font-size:14px;position:relative}
+  .an-preview img{display:block;width:100%;height:auto}
+  .an-grid{position:absolute;inset:0;pointer-events:none;
+    background:
+      linear-gradient(90deg,transparent 33.2%,rgba(255,255,255,.5) 33.2%,rgba(255,255,255,.5) 33.5%,transparent 33.5%,transparent 66.5%,rgba(255,255,255,.5) 66.5%,rgba(255,255,255,.5) 66.8%,transparent 66.8%),
+      linear-gradient(transparent 33.2%,rgba(255,255,255,.5) 33.2%,rgba(255,255,255,.5) 33.5%,transparent 33.5%,transparent 66.5%,rgba(255,255,255,.5) 66.5%,rgba(255,255,255,.5) 66.8%,transparent 66.8%)}
+  .an-row{display:flex;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--paper-2);font-size:14.5px}
+  .an-row:last-child{border-bottom:none}
+  .an-row .lbl{width:120px;flex:0 0 auto;color:var(--muted);font-size:13px}
+  .an-row .bar{flex:1;height:8px;background:var(--paper-2);border-radius:6px;overflow:hidden}
+  .an-row .bar span{display:block;height:100%;background:var(--teal)}
+  .an-row .mark{font-size:18px;flex:0 0 auto}
+  .an-note{margin-top:14px;background:var(--paper-2);border-radius:8px;padding:12px 14px;font-size:14.5px}
+
+  /* Ma caméra */
+  .cam-stage{background:#fff;border:1px solid var(--line);border-radius:14px;padding:16px;box-shadow:var(--shadow)}
+  .cam-figure{position:relative;width:100%;max-width:520px;margin:0 auto;aspect-ratio:4/3}
+  .cam-figure svg{display:block;width:100%;height:auto}
+  .cam-figure img{display:block;width:100%;height:auto;border-radius:10px}
+  .hotspot{position:absolute;transform:translate(-50%,-50%);width:30px;height:30px;border-radius:50%;
+    border:2px solid #fff;background:var(--accent);color:#fff;font-family:ui-monospace,monospace;font-size:14px;
+    font-weight:700;cursor:pointer;display:grid;place-items:center;box-shadow:0 2px 6px rgba(0,0,0,.35);
+    transition:transform .12s}
+  .hotspot:hover,.hotspot.active{transform:translate(-50%,-50%) scale(1.18);background:var(--teal)}
+  .hotspot:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+  .cam-toolbar{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:14px}
+  .cam-hint{text-align:center;font-size:13px;color:var(--muted);margin:10px 0 0}
+  .cam-detail{margin-top:16px;background:#fff;border:1px solid var(--line);border-left:4px solid var(--accent);
+    border-radius:10px;padding:16px 18px;font-size:15px;min-height:64px}
+  .cam-detail h4{margin:0 0 6px;font-size:17px;display:flex;align-items:center;gap:10px}
+  .cam-detail h4 .badge{background:var(--accent);color:#fff;font-family:ui-monospace,monospace;font-size:13px;
+    width:26px;height:26px;border-radius:50%;display:grid;place-items:center;flex:0 0 auto}
+  .cam-detail p{margin:0;color:#2a261f}
+  .cam-detail .do{margin-top:8px;font-size:14px;color:var(--teal)}
+  /* Schritt-Anleitungen: nummerierte Liste */
+  .guide ol{margin:4px 0 0;padding-left:0;list-style:none;counter-reset:st}
+  .guide li{counter-increment:st;position:relative;padding:8px 0 8px 38px;font-size:15px;border-bottom:1px solid var(--paper-2)}
+  .guide li:last-child{border-bottom:none}
+  .guide li::before{content:counter(st);position:absolute;left:0;top:7px;width:26px;height:26px;border-radius:50%;
+    background:var(--teal);color:#fff;font-family:ui-monospace,monospace;font-size:13px;display:grid;place-items:center}
+
+  /* compose SVG demo */
+  .svgdemo{display:block;width:100%;height:auto}
+
+  /* checklist */
+  .check{margin-top:30px;background:#fff;border:1px dashed var(--line);border-radius:12px;padding:18px 20px}
+  .check h3{margin:0 0 12px;font-size:18px}
+  .check ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+  .check li{display:flex;gap:10px;align-items:flex-start;font-size:15px}
+  .check input{margin-top:3px;width:18px;height:18px;accent-color:var(--teal);flex:0 0 auto}
+  .check li.done label{color:var(--muted);text-decoration:line-through}
+
+  footer{margin-top:46px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+  footer .sig{font-family:ui-monospace,monospace;letter-spacing:.1em}
+
+  @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
+
+  /* ===== Lumière : live + détective ===== */
+  .lum-stage{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
+  .lum-view{position:relative;width:100%;aspect-ratio:4/3;border-radius:14px;overflow:hidden;
+    background:linear-gradient(160deg,#2a1830,#5a2d52);display:grid;place-items:center}
+  .lum-view video{width:100%;height:100%;object-fit:cover;display:block}
+  .lum-empty{position:absolute;inset:0;display:grid;place-items:center;text-align:center;color:#ffd9e6;padding:24px}
+  .lum-empty p{margin:8px 0 0;font-size:14px}
+  .lum-emoji{font-size:40px}
+  .lum-meter{position:absolute;left:0;right:0;bottom:0;height:46px;
+    background:linear-gradient(90deg,#3a2438aa,transparent);display:flex;align-items:center;padding:0 14px}
+  .lum-meter::before{content:"";position:absolute;left:14px;right:14px;height:6px;border-radius:6px;
+    background:linear-gradient(90deg,#5a2d52,var(--gold) 50%,#fff)}
+  .lum-needle{position:absolute;width:4px;height:22px;border-radius:3px;background:#fff;
+    box-shadow:0 0 8px rgba(255,255,255,.8);transition:left .25s ease;left:50%}
+  .lum-result{margin-top:16px;background:linear-gradient(135deg,#fff,#fff5ef);border:1px solid var(--line);
+    border-radius:14px;padding:16px 18px}
+  .lum-result h4{margin:0 0 8px;font-family:var(--font-disp);font-size:19px}
+  .lum-chips{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .lum-chip{font-family:var(--font-body);font-weight:700;font-size:13px;
+    background:linear-gradient(100deg,var(--accent-soft),#fff);border:1px solid var(--line);
+    border-radius:20px;padding:6px 14px;color:var(--ink)}
+  .lum-tip{font-size:14.5px;color:#2a261f}
+  .lum-warn{margin-top:14px;background:linear-gradient(135deg,#fff,#fdeef4);border:1px solid var(--accent-2);
+    border-left:4px solid var(--accent);border-radius:0 12px 12px 0;padding:14px 16px;font-size:14.5px;color:var(--ink)}
+  .lum-warn .btn{display:inline-flex}
+
+  /* verspielte Sticker-Tabs */
+  nav.tabs button[aria-selected="true"]{font-weight:700}
+  nav.tabs button[aria-selected="true"] .n{background:linear-gradient(100deg,var(--accent),var(--accent-2));
+    color:#fff;border-color:transparent}
+  /* runde Karten weicher */
+  .ctrl,.verdict,.lesson,.analyzer,.cam-stage,.check{border-radius:16px}
+  /* Lektionsnummer mit Verlauf */
+  .lesson summary .num{background:linear-gradient(135deg,var(--accent),var(--teal))!important}
+
+  /* ===== Optimisation mobile (Pixel 8) & tablette (iPad) ===== */
+  /* Safe-Area iPad/iPhone */
+  .wrap{padding-left:max(20px, env(safe-area-inset-left));padding-right:max(20px, env(safe-area-inset-right))}
+
+  @media(max-width:760px){
+    .wrap{padding:18px 16px 70px}
+    /* Onglets : barre déroulante horizontale au lieu de retour à la ligne */
+    nav.tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;gap:2px;
+      margin:18px -16px 22px;padding:0 16px;scrollbar-width:none}
+    nav.tabs::-webkit-scrollbar{display:none}
+    nav.tabs button{flex:0 0 auto;padding:11px 13px;font-size:14px;white-space:nowrap}
+    .lead{font-size:16px;margin-bottom:20px}
+    h2.sec{font-size:22px}
+    /* zones tactiles confortables */
+    .btn{padding:12px 16px;font-size:15px;min-height:46px}
+    .source button{min-height:46px;font-size:12px}
+    input[type=range]{height:6px}
+    input[type=range]::-webkit-slider-thumb{width:30px;height:30px}
+    input[type=range]::-moz-range-thumb{width:30px;height:30px}
+    .lesson summary{padding:15px 16px;font-size:17px}
+    .lesson .body{padding:0 16px 16px 16px}     /* moins d'indentation sur petit écran */
+    .exo .goal{margin-left:0}
+    .cam-detail .do, .lesson .body{font-size:15px}
+    .hotspot{width:34px;height:34px;font-size:15px}   /* points plus gros au doigt */
+    .speak{width:40px;height:40px}
+    .check li{font-size:16px}
+    .check input{width:22px;height:22px}
+    /* éviter le zoom auto iOS : police ≥16px sur les champs */
+    input,button,select,textarea{font-size:16px}
+  }
+
+  /* iPad portrait : garder une colonne mais aérer */
+  @media(min-width:761px) and (max-width:819px){
+    .presets{grid-template-columns:repeat(2,1fr)}
+  }
+  /* très petits écrans */
+  @media(max-width:360px){
+    nav.tabs button .n{display:none}
+    .source button{padding:9px 4px;gap:3px}
+    .source svg{width:15px;height:15px}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="brand">
+      <small><span class="flag-heart fr" aria-hidden="true"></span> Joyeux 18<sup>e</sup> anniversaire · 19.06.2026 <span class="flag-heart de" aria-hidden="true"></span></small>
+      <h1>L'atelier d'<em>Elisa</em></h1>
+    </div>
+    <svg class="aperture-mark" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true">
+      <circle cx="50" cy="50" r="34"/>
+      <g>
+        <path d="M50 16 L66 44 L34 44 Z"/>
+        <path d="M84 50 L56 66 L56 34 Z"/>
+        <path d="M50 84 L34 56 L66 56 Z"/>
+        <path d="M16 50 L44 34 L44 66 Z"/>
+      </g>
+    </svg>
+  </header>
+  <p class="dedicace">Pour ta passion de la photo — apprends, essaie, et capture la lumière. <span>Je t'aime, ton Papa ♥</span></p>
+
+  <nav class="tabs" role="tablist">
+    <button role="tab" aria-selected="true" data-tab="studio"><span class="n">1</span> Le triangle</button>
+    <button role="tab" aria-selected="false" data-tab="compose"><span class="n">2</span> Composer</button>
+    <button role="tab" aria-selected="false" data-tab="terrain"><span class="n">3</span> Sur le terrain</button>
+    <button role="tab" aria-selected="false" data-tab="exercices"><span class="n">4</span> Exercices</button>
+    <button role="tab" aria-selected="false" data-tab="camera"><span class="n">5</span> Ma caméra</button>
+    <button role="tab" aria-selected="false" data-tab="studio2"><span class="n">6</span> Lumière</button>
+  </nav>
+
+  <!-- ============ PANEL 1 : TRIANGLE ============ -->
+  <section class="panel active" id="studio" role="tabpanel">
+    <div class="eyebrow">Exposition</div>
+    <h2 class="sec">Le triangle d'exposition</h2>
+    <p class="lead">Trois réglages décident de la luminosité — et de bien plus. Bouge un curseur et observe l'image changer en direct.</p>
+
+    <div class="studio">
+      <div class="viewstack">
+        <div class="source" role="group" aria-label="Source de l'image">
+          <button type="button" data-src="demo" aria-pressed="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M3 12h2M19 12h2M12 3v2M12 19v2"/></svg>Démo
+          </button>
+          <button type="button" data-src="gallery" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="14" rx="2"/><circle cx="8.5" cy="10" r="1.5"/><path d="M21 16l-5-5L5 19"/></svg>Photo
+          </button>
+          <button type="button" data-src="camera" aria-pressed="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1z"/><circle cx="12" cy="13" r="3.5"/></svg>Pixel 8
+          </button>
+        </div>
+        <input type="file" id="fileGallery" accept="image/*" hidden>
+        <input type="file" id="fileCamera" accept="image/*" capture="environment" hidden>
+        <div class="viewfinder" id="vf">
+          <div class="scene" id="scene">
+            <div class="sky"></div>
+            <div class="sun" id="sun"></div>
+            <div class="hill"></div>
+            <div class="subject" id="subject"></div>
+            <div class="grain" id="grain"></div>
+          </div>
+          <div class="photo" id="photo"></div>
+          <div class="reticle"></div>
+          <div class="hud">
+            <span id="hudLeft">f/5.6 · 1/125 · ISO 200</span>
+            <span class="ev" id="hudEv">EV 0.0</span>
+          </div>
+        </div>
+        <div class="toolbar">
+          <button class="btn" id="gridBtn" type="button">⊞ Grille des tiers</button>
+          <button class="btn" id="resetBtn" type="button">↺ Réinitialiser</button>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="ctrl">
+          <div class="row">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 3v18M4.5 7.5l15 9M4.5 16.5l15-9"/></svg>
+              Ouverture
+            </h3>
+            <span class="val" id="apVal">f/5.6</span>
+          </div>
+          <input type="range" id="ap" min="0" max="6" step="1" value="1" aria-label="Ouverture">
+          <p class="hint" id="apHint"></p>
+        </div>
+
+        <div class="ctrl">
+          <div class="row">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+              Vitesse
+            </h3>
+            <span class="val" id="shVal">1/125 s</span>
+          </div>
+          <input type="range" id="sh" min="0" max="7" step="1" value="3" aria-label="Vitesse d'obturation">
+          <p class="hint" id="shHint"></p>
+        </div>
+
+        <div class="ctrl">
+          <div class="row">
+            <h3>
+              <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 18V6M4 9h6M10 6v12M14 12a3 3 0 1 0 6 0 3 3 0 0 0-6 0"/></svg>
+              ISO
+            </h3>
+            <span class="val" id="isoVal">200</span>
+          </div>
+          <input type="range" id="iso" min="0" max="6" step="1" value="1" aria-label="Sensibilité ISO">
+          <p class="hint" id="isoHint"></p>
+        </div>
+
+        <div class="verdict" id="verdict">
+          <span class="badge" id="vBadge">—</span>
+          <span id="vText"></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="presets" id="presets"></div>
+  </section>
+
+  <!-- ============ PANEL 2 : COMPOSER ============ -->
+  <section class="panel" id="compose" role="tabpanel">
+    <div class="eyebrow">Composition</div>
+    <h2 class="sec">Bien cadrer son image</h2>
+    <p class="lead">Un bon réglage ne suffit pas. La composition guide le regard. Quatre principes simples, à garder en tête à chaque déclenchement.</p>
+
+    <div class="lessons" id="lessons"></div>
+
+    <div class="check">
+      <h3>Avant d'appuyer sur le déclencheur</h3>
+      <ul id="checklist"></ul>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 3 : TERRAIN ============ -->
+  <section class="panel" id="terrain" role="tabpanel">
+    <div class="eyebrow">Mémo</div>
+    <h2 class="sec">Quel mode pour quelle scène ?</h2>
+    <p class="lead">Un repère rapide pour choisir tes réglages selon la situation. Pars de là, puis ajuste avec le triangle.</p>
+    <div class="lessons" id="terrain-cards"></div>
+    <div class="astuce" style="margin-top:24px">
+      <b>La règle d'or :</b> en mode manuel (M), choisis d'abord le réglage le plus important pour ta scène
+      (ouverture pour un portrait, vitesse pour le sport), puis équilibre les deux autres jusqu'à EV 0.
+    </div>
+  </section>
+
+  <!-- ============ PANEL 4 : EXERCICES ============ -->
+  <section class="panel" id="exercices" role="tabpanel">
+    <div class="eyebrow">Entraînement</div>
+    <h2 class="sec">Exercices guidés</h2>
+    <p class="lead">Lis la mission, règle l'appareil dans l'onglet « Le triangle », puis reviens vérifier. La 🔊 lit la consigne à voix haute.</p>
+
+    <div class="lessons" id="exo-list"></div>
+
+    <div class="eyebrow" style="margin-top:34px">Analyse de photo</div>
+    <h2 class="sec">Analyse ta vraie photo</h2>
+    <p class="lead">Prends une photo avec le Pixel 8 (ou charge une image), puis lance l'analyse. L'app mesure la luminosité, le contraste et la composition — directement sur ton téléphone.</p>
+    <div class="analyzer">
+      <div class="toolbar" style="margin-bottom:14px">
+        <button class="btn primary" id="anCam" type="button">📷 Photographier</button>
+        <button class="btn" id="anFile" type="button">🖼️ Charger une image</button>
+        <button class="btn" id="anSpeak" type="button">🔊 Lire l'analyse</button>
+      </div>
+      <input type="file" id="anInputCam" accept="image/*" capture="environment" hidden>
+      <input type="file" id="anInputFile" accept="image/*" hidden>
+      <canvas id="anCanvas" hidden></canvas>
+      <div class="an-preview" id="anPreview">Aucune image pour l'instant.</div>
+      <div id="anResult"></div>
+    </div>
+  </section>
+
+  <!-- ============ PANEL 5 : MA CAMÉRA ============ -->
+  <section class="panel" id="camera" role="tabpanel">
+    <div class="eyebrow">Aide à la prise en main</div>
+    <h2 class="sec">Connaître sa Canon EOS 2000D</h2>
+    <p class="lead">Touche un point numéroté pour savoir où se trouve chaque commande et à quoi elle sert. Tu peux aussi charger une photo de ta vraie caméra.</p>
+
+    <div class="cam-stage">
+      <div class="cam-figure" id="camFigure">
+        <!-- SVG-Kamera wird hier gerendert -->
+      </div>
+      <div class="cam-toolbar">
+        <button class="btn" id="camPhotoBtn" type="button">📷 Photo de ma caméra</button>
+        <button class="btn" id="camDrawBtn" type="button">✏️ Revenir au schéma</button>
+      </div>
+      <input type="file" id="camPhotoInput" accept="image/*" capture="environment" hidden>
+      <p class="cam-hint" id="camPhotoHint" hidden>Astuce : prends la photo bien à plat, de face, puis touche les points.</p>
+    </div>
+
+    <div id="camDetail" class="cam-detail">Touche un numéro sur l'image pour voir l'explication ici.</div>
+
+    <div class="eyebrow" style="margin-top:36px">Pas à pas</div>
+    <h2 class="sec">Régler la caméra selon la scène</h2>
+    <p class="lead">Suis les étapes dans l'ordre. 🔊 lit la procédure à voix haute.</p>
+    <div class="lessons" id="cam-guides"></div>
+  </section>
+
+  <!-- ============ PANEL 6 : LUMIÈRE (live + détective) ============ -->
+  <section class="panel" id="studio2" role="tabpanel">
+    <div class="eyebrow">Innovation</div>
+    <h2 class="sec">Le posemètre vivant</h2>
+    <p class="lead">Pointe la caméra du Pixel sur ta scène : l'app mesure la lumière en direct et te propose des réglages. Comme un vrai posemètre, mais qui t'explique pourquoi.</p>
+
+    <div class="lum-stage">
+      <div class="lum-view" id="lumView">
+        <video id="lumVideo" playsinline muted></video>
+        <canvas id="lumCanvas" hidden></canvas>
+        <div class="lum-empty" id="lumEmpty">
+          <span class="lum-emoji">✨</span>
+          <p>Touche « Démarrer » pour activer la caméra en direct.</p>
+        </div>
+        <div class="lum-meter" id="lumMeter" hidden>
+          <div class="lum-needle" id="lumNeedle"></div>
+        </div>
+      </div>
+      <div class="cam-toolbar">
+        <button class="btn primary" id="lumStart" type="button">🎥 Démarrer le live</button>
+        <button class="btn" id="lumStop" type="button" hidden>⏹ Arrêter</button>
+        <button class="btn" id="lumSpeak" type="button">🔊 Lire le conseil</button>
+      </div>
+      <p class="cam-hint" id="lumNote"></p>
+      <div id="lumResult" class="lum-result" hidden></div>
+    </div>
+
+    <div class="eyebrow" style="margin-top:38px">Détective photo</div>
+    <h2 class="sec">Devine les réglages d'une photo</h2>
+    <p class="lead">Charge n'importe quelle photo : l'app remonte le temps et devine comment elle a été prise — luminosité, ambiance, idée de réglages. Marche partout, même hors ligne.</p>
+    <div class="analyzer">
+      <div class="toolbar" style="margin-bottom:14px">
+        <button class="btn primary" id="detFile" type="button">🕵️ Analyser une photo</button>
+        <button class="btn" id="detSpeak" type="button">🔊 Lire l'enquête</button>
+      </div>
+      <input type="file" id="detInput" accept="image/*" hidden>
+      <canvas id="detCanvas" hidden></canvas>
+      <div class="an-preview" id="detPreview">Aucune photo à enquêter.</div>
+      <div id="detResult"></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>Pour Elisa ♥ St-Avold · Montpellier · Saarbrücken</span>
+    <span class="sig">Crois en toi. Suis tes rêves.</span>
+  </footer>
+</div>
+
+<script>
+"use strict";
+
+/* ---------------- Données du triangle ---------------- */
+const AP  = [
+  {l:"f/3.5", ev:-1, dof:"faible"},
+  {l:"f/4.5", ev:0,  dof:"moyenne"},
+  {l:"f/5.6", ev:1,  dof:"moyenne"},
+  {l:"f/8",   ev:2,  dof:"grande"},
+  {l:"f/11",  ev:3,  dof:"grande"},
+  {l:"f/16",  ev:4,  dof:"très grande"},
+  {l:"f/22",  ev:5,  dof:"très grande"}
+];
+const SH = [
+  {l:"1/30 s",  ev:-2, mv:"risque de flou"},
+  {l:"1/60 s",  ev:-1, mv:"limite à main levée"},
+  {l:"1/100 s", ev:0,  mv:"net à main levée"},
+  {l:"1/125 s", ev:0,  mv:"net à main levée"},
+  {l:"1/250 s", ev:1,  mv:"fige le mouvement léger"},
+  {l:"1/500 s", ev:2,  mv:"fige la course"},
+  {l:"1/1000 s",ev:3,  mv:"fige le sport rapide"},
+  {l:"1/4000 s",ev:5,  mv:"fige tout (vitesse max)"}
+];
+const ISO = [
+  {l:"100",  ev:-1, n:0},
+  {l:"200",  ev:0,  n:0},
+  {l:"400",  ev:1,  n:0.05},
+  {l:"800",  ev:2,  n:0.12},
+  {l:"1600", ev:3,  n:0.22},
+  {l:"3200", ev:4,  n:0.36},
+  {l:"6400", ev:5,  n:0.55}
+];
+
+const els = {
+  ap:document.getElementById('ap'), sh:document.getElementById('sh'), iso:document.getElementById('iso'),
+  apVal:document.getElementById('apVal'), shVal:document.getElementById('shVal'), isoVal:document.getElementById('isoVal'),
+  apHint:document.getElementById('apHint'), shHint:document.getElementById('shHint'), isoHint:document.getElementById('isoHint'),
+  scene:document.getElementById('scene'), subject:document.getElementById('subject'), grain:document.getElementById('grain'),
+  photo:document.getElementById('photo'),
+  hudLeft:document.getElementById('hudLeft'), hudEv:document.getElementById('hudEv'),
+  verdict:document.getElementById('verdict'), vBadge:document.getElementById('vBadge'), vText:document.getElementById('vText'),
+  vf:document.getElementById('vf')
+};
+
+function render(){
+  const a=AP[+els.ap.value], s=SH[+els.sh.value], i=ISO[+els.iso.value];
+  els.apVal.textContent=a.l; els.shVal.textContent=s.l; els.isoVal.textContent=i.l;
+
+  els.apHint.textContent = "Profondeur de champ "+a.dof+(a.ev<0?" — l'arrière-plan devient flou.":a.ev>1?" — tout est net.":" — équilibré.");
+  els.shHint.textContent = "Mouvement : "+s.mv+".";
+  els.isoHint.textContent = i.n>0.18 ? "Sensible mais l'image grise (bruit) apparaît." : "Image propre.";
+
+  // EV total : 0 = correct. Base de référence f/5.6 + 1/125 + ISO200.
+  const ev = a.ev + s.ev + (i.ev*-1); // ouverture+vitesse fermées = sombre ; ISO haut = clair
+  // luminosité simulée
+  const exposure = -ev; // ev positif = trop fermé = sombre
+  const bright = 1 + exposure*0.13;
+  const clamped = Math.max(0.45, Math.min(1.55, bright));
+  els.scene.style.filter = `brightness(${clamped})`;
+
+  // flou d'arrière-plan : ouverture ouverte (petit indice) = fond flou
+  const apI=+els.ap.value, shI=+els.sh.value;
+  const bg = apI<=2 ? (3-apI)*1.6 : 0;       // f/3.5..f/5.6 => bokeh
+  els.scene.style.setProperty('--blur', bg+'px');
+  document.querySelector('.hill').style.filter = bg>0 ? `blur(${bg}px)` : 'none';
+  document.querySelector('.sun').style.filter  = bg>0 ? `blur(${bg*0.9}px)` : 'none';
+  // flou de bougé : vitesse lente (indice 0-1) => sujet flou
+  els.subject.style.filter = shI<=1 ? `blur(${(2-shI)*1.5}px)` : 'none';
+
+  // sur une vraie photo : on simule la luminosité (et un léger flou de bougé)
+  const photoBlur = shI<=1 ? (2-shI)*1.2 : 0;
+  els.photo.style.filter = `brightness(${clamped}) blur(${photoBlur}px)`;
+
+  // grain ISO
+  els.grain.style.opacity = i.n;
+
+  els.hudLeft.textContent = a.l+" · "+s.l+" · ISO "+i.l;
+  els.hudEv.textContent = "EV "+(ev>0?"+":"")+ev.toFixed(1);
+
+  // verdict
+  let cls="", badge="", txt="";
+  if(ev<=-2){cls="attention";badge="SUREXPOSÉ";txt="Trop de lumière : ferme l'ouverture, accélère la vitesse ou baisse l'ISO.";}
+  else if(ev>=2){cls="attention";badge="SOUS-EXPOSÉ";txt="Trop sombre : ouvre davantage, ralentis ou monte l'ISO.";}
+  else if(ev===0){cls="bon";badge="EXPOSITION JUSTE";txt="Lumière équilibrée. Maintenant, soigne la composition.";}
+  else {cls="bon";badge="EXPOSITION OK";txt="Proche de l'idéal. Petit ajustement possible si tu veux EV 0.";}
+  els.verdict.className="verdict "+cls;
+  els.vBadge.textContent=badge; els.vText.textContent=txt;
+}
+['ap','sh','iso'].forEach(k=>els[k].addEventListener('input',render));
+
+document.getElementById('gridBtn').addEventListener('click',()=>els.vf.classList.toggle('grid'));
+document.getElementById('resetBtn').addEventListener('click',()=>{els.ap.value=1;els.sh.value=3;els.iso.value=1;render();});
+
+/* ---------------- Source : démo / photo / appareil photo Pixel ---------------- */
+const srcBtns=document.querySelectorAll('.source button');
+const fileGallery=document.getElementById('fileGallery');
+const fileCamera=document.getElementById('fileCamera');
+
+function setSource(src){
+  srcBtns.forEach(b=>b.setAttribute('aria-pressed', b.dataset.src===src ? 'true':'false'));
+  if(src==='demo'){
+    els.vf.classList.remove('hasphoto');
+    els.photo.style.backgroundImage='';
+  } else if(src==='gallery'){
+    fileGallery.click();
+  } else if(src==='camera'){
+    fileCamera.click();
+  }
+}
+srcBtns.forEach(b=>b.addEventListener('click',()=>setSource(b.dataset.src)));
+
+function loadPhoto(input){
+  const f=input.files && input.files[0];
+  if(!f) return;
+  const url=URL.createObjectURL(f);
+  els.photo.style.backgroundImage=`url("${url}")`;
+  els.vf.classList.add('hasphoto');
+  els.vf.classList.add('grid');           // Raster automatisch an, zum Komponieren
+  render();
+  els.vf.scrollIntoView({behavior:'smooth',block:'start'});
+}
+fileGallery.addEventListener('change',()=>loadPhoto(fileGallery));
+fileCamera.addEventListener('change',()=>loadPhoto(fileCamera));
+
+/* ---------------- Presets ---------------- */
+const PRESETS=[
+  {tag:"Portrait", t:"Arrière-plan flou", d:"Ouverture max (f/3.5), zoom à 55 mm.", v:[0,3,1]},
+  {tag:"Paysage",  t:"Tout net", d:"Petite ouverture, image propre.", v:[4,2,0]},
+  {tag:"Sport",    t:"Figer le mouvement", d:"Vitesse rapide, ISO relevé.", v:[1,6,3]},
+  {tag:"Nuit",     t:"Faible lumière", d:"Ouverture max et ISO élevé.", v:[0,1,5]}
+];
+const pc=document.getElementById('presets');
+PRESETS.forEach(p=>{
+  const b=document.createElement('button');b.className='preset';b.type='button';
+  b.innerHTML=`<span class="tag">${p.tag}</span><b>${p.t}</b><span>${p.d}</span>`;
+  b.addEventListener('click',()=>{els.ap.value=p.v[0];els.sh.value=p.v[1];els.iso.value=p.v[2];render();
+    document.getElementById('vf').scrollIntoView({behavior:'smooth',block:'center'});});
+  pc.appendChild(b);
+});
+
+/* ---------------- Leçons de composition ---------------- */
+const LESSONS=[
+  {n:1,t:"La règle des tiers",
+   svg:`<svg class="svgdemo" viewBox="0 0 300 180"><rect width="300" height="180" fill="#cfe0ec"/><rect y="120" width="300" height="60" fill="#7fae6e"/><circle cx="200" cy="60" r="14" fill="#f4b740"/><g stroke="#c2410c" stroke-width="1.5" stroke-dasharray="4 4" opacity=".8"><line x1="100" y1="0" x2="100" y2="180"/><line x1="200" y1="0" x2="200" y2="180"/><line x1="0" y1="60" x2="300" y2="60"/><line x1="0" y1="120" x2="300" y2="120"/></g><circle cx="200" cy="60" r="20" fill="none" stroke="#c2410c" stroke-width="2"/></svg>`,
+   p:["Imagine deux lignes verticales et deux horizontales qui découpent l'image en neuf cases. Place ton sujet sur une intersection, pas au centre.","Un horizon se pose sur la ligne du haut ou du bas — jamais en plein milieu."],
+   a:"Active la grille dans ton appareil (et dans l'onglet « Le triangle » ici) pour t'entraîner l'œil."},
+  {n:2,t:"Les lignes directrices",
+   svg:`<svg class="svgdemo" viewBox="0 0 300 180"><rect width="300" height="180" fill="#e7dcc4"/><polygon points="130,180 170,180 200,30 100,30" fill="#b9a988"/><line x1="130" y1="180" x2="155" y2="30" stroke="#8a7a5c" stroke-width="2"/><line x1="170" y1="180" x2="155" y2="30" stroke="#8a7a5c" stroke-width="2"/><circle cx="155" cy="40" r="9" fill="#c2410c"/></svg>`,
+   p:["Routes, rails, clôtures, rivières : utilise ces lignes pour conduire le regard vers ton sujet.","Elles donnent de la profondeur et rendent l'image vivante."],
+   a:"Place le point de fuite (là où les lignes se rejoignent) sur une intersection des tiers."},
+  {n:3,t:"La lumière fait l'image",
+   svg:`<svg class="svgdemo" viewBox="0 0 300 180"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#f4c98a"/><stop offset="1" stop-color="#5b4636"/></linearGradient></defs><rect width="300" height="180" fill="url(#g)"/><circle cx="40" cy="40" r="22" fill="#fff3d6"/><ellipse cx="180" cy="120" rx="40" ry="16" fill="#3a2c20" opacity=".5"/><rect x="160" y="70" width="36" height="55" rx="6" fill="#6b5240"/></svg>`,
+   p:["La meilleure lumière n'est pas à midi. Vise « l'heure dorée » : juste après le lever ou avant le coucher du soleil.","Lumière de côté = relief et texture. Lumière de face = image plate."],
+   a:"Évite le soleil dur de midi : les ombres sont trop noires et les visages plissent les yeux."},
+  {n:4,t:"Simplifier le cadre",
+   svg:`<svg class="svgdemo" viewBox="0 0 300 180"><rect width="300" height="180" fill="#dfe7e3"/><rect x="120" y="55" width="60" height="80" rx="8" fill="#c2410c"/><circle cx="150" cy="40" r="16" fill="#c2410c"/></svg>`,
+   p:["Un sujet, un message. Approche-toi ou change d'angle pour enlever ce qui ne sert à rien.","Surveille les bords : un poteau « qui pousse » dans la tête, une branche qui dépasse — recadre."],
+   a:"Avant de déclencher, fais le tour du cadre des yeux : que peut-on retirer ?"}
+];
+const lc=document.getElementById('lessons');
+LESSONS.forEach((L,idx)=>{
+  const d=document.createElement('details');d.className='lesson';if(idx===0)d.open=true;
+  d.innerHTML=`<summary><span class="num">${L.n}</span>${L.t}
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
+    <div class="body"><div class="demo">${L.svg}</div>${L.p.map(x=>`<p>${x}</p>`).join("")}<div class="astuce"><b>Astuce :</b> ${L.a}</div></div>`;
+  lc.appendChild(d);
+});
+
+/* ---------------- Checklist ---------------- */
+const CHECK=[
+  "Exposition réglée (EV 0)","Mise au point sur l'œil / le sujet principal",
+  "Sujet placé sur les tiers","Horizon droit","Bords du cadre nettoyés","Bonne lumière (ou attendre l'heure dorée)"
+];
+const ul=document.getElementById('checklist');
+CHECK.forEach((c,i)=>{
+  const li=document.createElement('li');
+  li.innerHTML=`<input type="checkbox" id="c${i}"><label for="c${i}">${c}</label>`;
+  const cb=li.querySelector('input');
+  cb.addEventListener('change',()=>li.classList.toggle('done',cb.checked));
+  ul.appendChild(li);
+});
+
+/* ---------------- Terrain cards ---------------- */
+const TERRAIN=[
+  {n:"A",t:"Portrait",p:["Mode Av (priorité ouverture) ou M.","f/3.5 et zoom à 55 mm pour un fond flou.","Mise au point sur l'œil. Vitesse mini 1/125 s."]},
+  {n:"B",t:"Paysage",p:["f/8–f/11 pour la netteté du premier plan au fond.","ISO 100. Trépied si la lumière baisse.","Soigne l'horizon et le premier plan."]},
+  {n:"C",t:"Sport / animaux",p:["Vitesse 1/500 s ou plus rapide.","Mode rafale + autofocus continu (AI Servo).","Monte l'ISO si besoin pour garder la vitesse."]},
+  {n:"D",t:"Nuit / faible lumière",p:["Ouverture max (f/3.5), ISO 1600–6400.","Trépied + retardateur pour les paysages de nuit.","Accepte un peu de bruit : mieux que le flou."]}
+];
+const tc=document.getElementById('terrain-cards');
+TERRAIN.forEach((T,idx)=>{
+  const d=document.createElement('details');d.className='lesson';if(idx===0)d.open=true;
+  d.innerHTML=`<summary><span class="num">${T.n}</span>${T.t}
+    <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
+    <div class="body">${T.p.map(x=>`<p>• ${x}</p>`).join("")}</div>`;
+  tc.appendChild(d);
+});
+
+/* ---------------- Tabs ---------------- */
+const tabs=document.querySelectorAll('nav.tabs button');
+tabs.forEach(b=>b.addEventListener('click',()=>{
+  tabs.forEach(x=>x.setAttribute('aria-selected','false'));
+  b.setAttribute('aria-selected','true');
+  document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById(b.dataset.tab).classList.add('active');
+}));
+
+/* blur du fond piloté par variable */
+const styleBlur=document.createElement('style');
+styleBlur.textContent='.scene .sky{filter:none}';
+document.head.appendChild(styleBlur);
+
+/* ============ Lecture à voix haute (français) ============ */
+const synth = window.speechSynthesis || null;
+let frVoice = null;
+function pickVoice(){
+  if(!synth) return;
+  const vs = synth.getVoices();
+  frVoice = vs.find(v=>/fr-FR/i.test(v.lang)) || vs.find(v=>/^fr/i.test(v.lang)) || null;
+}
+if(synth){ pickVoice(); synth.onvoiceschanged = pickVoice; }
+let speakingBtn=null;
+function speak(text, btn){
+  if(!synth){ alert("La lecture vocale n'est pas disponible sur ce navigateur."); return; }
+  if(synth.speaking){ synth.cancel(); if(speakingBtn){speakingBtn.classList.remove('on');} if(speakingBtn===btn){speakingBtn=null;return;} }
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang='fr-FR'; if(frVoice) u.voice=frVoice; u.rate=0.95; u.pitch=1;
+  u.onend=()=>{ if(btn) btn.classList.remove('on'); speakingBtn=null; };
+  if(btn){ btn.classList.add('on'); speakingBtn=btn; }
+  synth.speak(u);
+}
+const SPK_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 5 6 9H3v6h3l5 4V5z"/><path d="M16 9a4 4 0 0 1 0 6"/></svg>';
+/* Vorlese-Knopf an alle Lektionen/Terrain hängen */
+document.querySelectorAll('#lessons .lesson, #terrain-cards .lesson').forEach(d=>{
+  const sum=d.querySelector('summary');
+  const btn=document.createElement('button');
+  btn.type='button'; btn.className='speak'; btn.setAttribute('aria-label','Lire à voix haute');
+  btn.innerHTML=SPK_SVG;
+  btn.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
+    const txt=d.querySelector('.body').innerText.replace(/Astuce ?:/g,'Astuce.');
+    speak(sum.innerText+'. '+txt, btn);
+  });
+  sum.appendChild(btn);
+});
+
+/* ============ Exercices guidés ============ */
+// cible : indices [ap, sh, iso] ; tolérance par champ
+const EXOS=[
+  {n:1,t:"Un portrait avec fond flou",
+   goal:"Objectif : isoler ton sujet",
+   consigne:"Tu photographies une personne. Tu veux que le visage soit net et l'arrière-plan doux et flou. Ouvre l'ouverture au maximum et garde une vitesse nette à main levée.",
+   chips:["f/3.5","1/125 s","ISO 200"], target:{ap:0, sh:3, iso:1}},
+  {n:2,t:"Un paysage tout net",
+   goal:"Objectif : netteté du premier plan au fond",
+   consigne:"Tu photographies des collines. Tout doit être net, du premier plan jusqu'à l'horizon. Ferme l'ouverture et garde l'ISO le plus bas.",
+   chips:["f/11","1/100 s","ISO 100"], target:{ap:4, sh:2, iso:0}},
+  {n:3,t:"Figer un mouvement",
+   goal:"Objectif : arrêter l'action",
+   consigne:"Un chien court vers toi. Tu veux le figer, sans flou de bougé. Choisis une vitesse rapide et monte l'ISO pour garder la lumière.",
+   chips:["f/4.5","1/1000 s","ISO 800"], target:{ap:1, sh:6, iso:3}},
+  {n:4,t:"Une scène de nuit",
+   goal:"Objectif : capter peu de lumière",
+   consigne:"Il fait sombre. Tu veux une image assez claire sans trépied. Ouvre au maximum et monte fortement l'ISO.",
+   chips:["f/3.5","1/60 s","ISO 3200"], target:{ap:0, sh:1, iso:5}}
+];
+const exoList=document.getElementById('exo-list');
+EXOS.forEach((E,idx)=>{
+  const d=document.createElement('details');d.className='lesson exo';if(idx===0)d.open=true;
+  d.innerHTML=`<summary><span class="num">${E.n}</span>${E.t}
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>
+      <span class="goal">${E.goal}</span></summary>
+    <div class="body">
+      <p>${E.consigne}</p>
+      <div class="target">${E.chips.map(c=>`<span class="chip">${c}</span>`).join("")}</div>
+      <div class="verify">
+        <button class="btn primary verifyBtn" type="button">✓ Vérifier mes réglages</button>
+        <button class="speak exoSpeak" type="button" aria-label="Lire la consigne">${SPK_SVG}</button>
+      </div>
+      <p class="status" style="margin-top:10px"></p>
+    </div>`;
+  const status=d.querySelector('.status');
+  d.querySelector('.verifyBtn').addEventListener('click',()=>{
+    const cur={ap:+els.ap.value, sh:+els.sh.value, iso:+els.iso.value};
+    const dAp=Math.abs(cur.ap-E.target.ap), dSh=Math.abs(cur.sh-E.target.sh), dIso=Math.abs(cur.iso-E.target.iso);
+    const tips=[];
+    if(dAp>0) tips.push(cur.ap>E.target.ap?"ouvre davantage l'ouverture":"ferme un peu l'ouverture");
+    if(dSh>0) tips.push(cur.sh>E.target.sh?"ralentis la vitesse":"accélère la vitesse");
+    if(dIso>0) tips.push(cur.iso>E.target.iso?"baisse l'ISO":"monte l'ISO");
+    if(dAp<=1 && dSh<=1 && dIso<=1 && (dAp+dSh+dIso)<=2){
+      status.textContent="✅ Bravo ! Tes réglages conviennent parfaitement à cette scène.";
+      status.className="status ok";
+    } else {
+      status.textContent="🔧 Presque : "+tips.join(", ")+". Va dans « Le triangle » et réessaie.";
+      status.className="status no";
+    }
+    speak(status.textContent, null);
+  });
+  d.querySelector('.exoSpeak').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
+    speak(E.t+". "+E.consigne, e.currentTarget);});
+  exoList.appendChild(d);
+});
+
+/* ============ Analyse de photo réelle (sur l'appareil) ============ */
+const anCanvas=document.getElementById('anCanvas');
+const anPreview=document.getElementById('anPreview');
+const anResult=document.getElementById('anResult');
+const anInputCam=document.getElementById('anInputCam');
+const anInputFile=document.getElementById('anInputFile');
+let lastAnalysisText="";
+document.getElementById('anCam').addEventListener('click',()=>anInputCam.click());
+document.getElementById('anFile').addEventListener('click',()=>anInputFile.click());
+document.getElementById('anSpeak').addEventListener('click',e=>{
+  if(lastAnalysisText) speak(lastAnalysisText, e.currentTarget);
+  else speak("Prends d'abord une photo à analyser.", e.currentTarget);
+});
+function handleAnalyze(input){
+  const f=input.files && input.files[0]; if(!f) return;
+  const img=new Image();
+  img.onload=()=>{ analyzeImage(img); URL.revokeObjectURL(img.src); };
+  img.src=URL.createObjectURL(f);
+}
+anInputCam.addEventListener('change',()=>handleAnalyze(anInputCam));
+anInputFile.addEventListener('change',()=>handleAnalyze(anInputFile));
+
+function analyzeImage(img){
+  // Vorschau
+  anPreview.innerHTML='';
+  const pv=new Image(); pv.src=img.src; anPreview.appendChild(pv);
+  const grid=document.createElement('div'); grid.className='an-grid'; anPreview.appendChild(grid);
+
+  // herunterskalieren für schnelle Analyse
+  const W=120, H=Math.max(1,Math.round(W*img.height/img.width));
+  anCanvas.width=W; anCanvas.height=H;
+  const ctx=anCanvas.getContext('2d');
+  ctx.drawImage(img,0,0,W,H);
+  const data=ctx.getImageData(0,0,W,H).data;
+
+  let sum=0, n=W*H, min=255, max=0;
+  const lum=new Float32Array(n);
+  for(let p=0,k=0;p<data.length;p+=4,k++){
+    const L=0.2126*data[p]+0.7152*data[p+1]+0.0722*data[p+2];
+    lum[k]=L; sum+=L; if(L<min)min=L; if(L>max)max=L;
+  }
+  const mean=sum/n;                 // 0..255 Helligkeit
+  const contrast=max-min;           // einfache Spanne
+  // hellster Bereich finden (Schwerpunkt der hellen Pixel) -> Drittel-Check
+  let bx=0,by=0,bw=0;
+  for(let y=0;y<H;y++)for(let x=0;x<W;x++){
+    const L=lum[y*W+x]; if(L>mean){ const w=L-mean; bx+=x*w; by+=y*w; bw+=w; }
+  }
+  const cx=bw?bx/bw/W:0.5, cy=bw?by/bw/H:0.5;   // 0..1
+  // Distanz zur nächsten Drittel-Linie (x: 1/3 oder 2/3)
+  const near=(v)=>Math.min(Math.abs(v-0.333),Math.abs(v-0.667));
+  const compScore = 1 - Math.min(1,(near(cx)+near(cy)));   // 1 = parfait sur les tiers
+
+  // Bewertungen
+  const expoPct=Math.round(mean/255*100);
+  let expoMark, expoTxt;
+  if(mean<70){expoMark="⚠️"; expoTxt="ton image est plutôt sombre : ouvre davantage, ralentis ou monte l'ISO.";}
+  else if(mean>185){expoMark="⚠️"; expoTxt="ton image est très claire : ferme l'ouverture ou accélère la vitesse.";}
+  else {expoMark="✅"; expoTxt="ta lumière est bien équilibrée.";}
+
+  const contrastPct=Math.round(contrast/255*100);
+  let contrastTxt = contrast<90 ? "image un peu plate : cherche une lumière plus marquée." :
+                    contrast>230 ? "contraste très fort : attention aux zones brûlées ou bouchées." :
+                    "bon contraste.";
+
+  let compMark, compTxt;
+  if(compScore>0.78){compMark="✅"; compTxt="ton sujet est bien placé sur les lignes des tiers. Joli cadrage !";}
+  else if(compScore>0.55){compMark="🙂"; compTxt="cadrage correct. Essaie de placer le sujet pile sur une intersection.";}
+  else {compMark="🔧"; compTxt="ton sujet est trop centré. Décale-le sur une ligne des tiers pour plus de dynamisme.";}
+
+  anResult.innerHTML=`
+    <div class="an-row"><span class="lbl">Luminosité</span><div class="bar"><span style="width:${expoPct}%"></span></div><span class="mark">${expoMark}</span></div>
+    <div class="an-row"><span class="lbl">Contraste</span><div class="bar"><span style="width:${contrastPct}%"></span></div><span class="mark">${contrast<90||contrast>230?"🙂":"✅"}</span></div>
+    <div class="an-row"><span class="lbl">Composition</span><div class="bar"><span style="width:${Math.round(compScore*100)}%"></span></div><span class="mark">${compMark}</span></div>
+    <div class="an-note"><b>Conseils :</b> ${expoTxt} Côté contraste, ${contrastTxt} Pour le cadrage, ${compTxt}</div>`;
+  lastAnalysisText=`Analyse de ta photo. Luminosité : ${expoTxt} Contraste : ${contrastTxt} Composition : ${compTxt}`;
+}
+
+/* ============ Ma caméra : schéma, points et guides ============ */
+const CAM_SVG = `
+<svg viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Schéma Canon EOS 2000D">
+  <defs>
+    <linearGradient id="body" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#3a3a3d"/><stop offset="1" stop-color="#1c1c1f"/>
+    </linearGradient>
+    <radialGradient id="lensg" cx="50%" cy="45%" r="60%">
+      <stop offset="0" stop-color="#2a2a2e"/><stop offset="0.7" stop-color="#161618"/><stop offset="1" stop-color="#0a0a0b"/>
+    </radialGradient>
+  </defs>
+  <rect x="40" y="95" width="320" height="150" rx="18" fill="url(#body)"/>
+  <path d="M330 100 q40 0 38 60 q-3 70 -40 80 q12 -70 2 -140z" fill="#222"/>
+  <path d="M150 95 q50 -42 100 0z" fill="#26262a"/>
+  <rect x="178" y="56" width="44" height="14" rx="3" fill="#2c2c30"/>
+  <circle cx="95" cy="92" r="30" fill="#2b2b2f" stroke="#444" stroke-width="2"/>
+  <circle cx="95" cy="92" r="14" fill="#1a1a1c"/>
+  <text x="95" y="58" font-size="9" fill="#bbb" text-anchor="middle" font-family="monospace">M Av Tv P</text>
+  <circle cx="320" cy="92" r="13" fill="#3a3a3d" stroke="#555" stroke-width="2"/>
+  <circle cx="320" cy="92" r="6" fill="#d0d0d0"/>
+  <circle cx="290" cy="120" r="11" fill="#2b2b2f" stroke="#555" stroke-width="2"/>
+  <rect x="70" y="135" width="150" height="95" rx="6" fill="#0e2a3a" stroke="#333" stroke-width="2"/>
+  <text x="145" y="188" font-size="11" fill="#3d7fa0" text-anchor="middle" font-family="monospace">ÉCRAN</text>
+  <circle cx="250" cy="170" r="66" fill="url(#lensg)" stroke="#2a2a2e" stroke-width="4"/>
+  <circle cx="250" cy="170" r="40" fill="#0c0c0d" stroke="#333" stroke-width="2"/>
+  <circle cx="250" cy="170" r="20" fill="#050506"/>
+  <circle cx="250" cy="170" r="66" fill="none" stroke="#3a3a3e" stroke-width="6" stroke-dasharray="4 5"/>
+  <rect x="300" y="150" width="26" height="16" rx="3" fill="#2c2c30" stroke="#555"/>
+  <text x="313" y="146" font-size="8" fill="#bbb" text-anchor="middle" font-family="monospace">AF/MF</text>
+  <text x="250" y="240" font-size="9" fill="#888" text-anchor="middle" font-family="monospace">18-55mm</text>
+</svg>`;
+
+const CAM_POINTS = [
+  {n:1, x:23.5, y:30, t:"La molette des modes",
+   d:"En haut à gauche. Tu la tournes pour choisir comment la caméra travaille.",
+   do:"Pour apprendre : mets-la sur M (manuel). Pour aller vite : Av (tu choisis l'ouverture), Tv (tu choisis la vitesse), ou P (automatique assisté)."},
+  {n:2, x:80, y:30, t:"Le déclencheur",
+   d:"Le gros bouton sur le dessus, côté poignée. C'est lui qui prend la photo.",
+   do:"Appuie à moitié pour faire la mise au point (un bip = c'est net), puis appuie à fond pour déclencher."},
+  {n:3, x:72.5, y:40, t:"La molette principale",
+   d:"Juste derrière le déclencheur. Elle règle la valeur active.",
+   do:"En mode Av elle change l'ouverture, en mode Tv la vitesse."},
+  {n:4, x:36, y:61, t:"L'écran arrière",
+   d:"Le grand écran. Il montre tes réglages et l'image après la photo.",
+   do:"Surveille la barre d'exposition : vise le repère au centre (±0) pour une lumière juste."},
+  {n:5, x:62.5, y:57, t:"La bague de zoom",
+   d:"La grosse bague de l'objectif. Elle rapproche ou éloigne le sujet.",
+   do:"Tourne vers 55 mm pour zoomer (et plus de flou d'arrière-plan), vers 18 mm pour un grand angle (paysage)."},
+  {n:6, x:80, y:52, t:"Le sélecteur AF / MF",
+   d:"Petit interrupteur sur l'objectif.",
+   do:"Laisse sur AF (mise au point automatique). MF = manuel, seulement si l'autofocus n'accroche pas."},
+  {n:7, x:50, y:19, t:"Le flash intégré",
+   d:"Au-dessus du viseur. Aide quand il fait sombre ou à contre-jour.",
+   do:"À éviter pour les portraits doux : la lumière devient dure."}
+];
+
+const camFigure=document.getElementById('camFigure');
+const camDetail=document.getElementById('camDetail');
+
+function camAddHotspots(){
+  CAM_POINTS.forEach(pt=>{
+    const b=document.createElement('button');
+    b.type='button'; b.className='hotspot'; b.textContent=pt.n;
+    b.style.left=pt.x+'%'; b.style.top=pt.y+'%';
+    b.setAttribute('aria-label','Commande '+pt.n+' : '+pt.t);
+    b.addEventListener('click',()=>camShowPoint(pt,b));
+    camFigure.appendChild(b);
+  });
+}
+function camDrawSchema(){ camFigure.innerHTML=CAM_SVG; camAddHotspots(); }
+function camShowPoint(pt,btn){
+  document.querySelectorAll('#camFigure .hotspot').forEach(h=>h.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  camDetail.innerHTML=`<h4><span class="badge">${pt.n}</span>${pt.t}
+      <button class="speak" type="button" aria-label="Lire" style="margin-left:auto">${SPK_SVG}</button></h4>
+    <p>${pt.d}</p><p class="do"><b>Comment faire :</b> ${pt.do}</p>`;
+  camDetail.querySelector('.speak').addEventListener('click',e=>speak(pt.t+'. '+pt.d+' '+pt.do, e.currentTarget));
+}
+camDrawSchema();
+
+const camPhotoInput=document.getElementById('camPhotoInput');
+document.getElementById('camPhotoBtn').addEventListener('click',()=>camPhotoInput.click());
+document.getElementById('camDrawBtn').addEventListener('click',()=>{
+  document.getElementById('camPhotoHint').hidden=true; camDrawSchema();
+});
+camPhotoInput.addEventListener('change',()=>{
+  const f=camPhotoInput.files && camPhotoInput.files[0]; if(!f) return;
+  const url=URL.createObjectURL(f);
+  camFigure.innerHTML=`<img src="${url}" alt="Ma caméra">`;
+  camAddHotspots();
+  document.getElementById('camPhotoHint').hidden=false;
+});
+
+const CAM_GUIDES=[
+  {n:"A",t:"Portrait (fond flou)",steps:[
+    "Tourne la molette des modes sur <b>Av</b>.",
+    "Avec la molette principale, choisis <b>f/3.5</b> (le plus petit chiffre).",
+    "Tourne la bague de zoom vers <b>55 mm</b>.",
+    "Vise l'œil du sujet, appuie à moitié pour la mise au point.",
+    "Vérifie que la vitesse est au moins 1/125 s, puis déclenche."]},
+  {n:"B",t:"Paysage (tout net)",steps:[
+    "Molette des modes sur <b>Av</b>.",
+    "Choisis <b>f/8</b> à <b>f/11</b> avec la molette principale.",
+    "Règle l'ISO sur <b>100</b>.",
+    "Zoom vers <b>18 mm</b> pour un grand angle.",
+    "Tiens la caméra bien stable, puis déclenche."]},
+  {n:"C",t:"Sport / mouvement",steps:[
+    "Molette des modes sur <b>Tv</b>.",
+    "Choisis une vitesse rapide : <b>1/500 s</b> ou plus.",
+    "Mets l'ISO sur <b>Auto</b>.",
+    "Active la rafale et l'autofocus continu (AI Servo) dans le menu.",
+    "Suis le sujet, appuie à moitié puis déclenche en rafale."]},
+  {n:"D",t:"Nuit / faible lumière",steps:[
+    "Molette des modes sur <b>M</b> (manuel).",
+    "Ouverture <b>f/3.5</b>, vitesse <b>1/60 s</b>.",
+    "Monte l'ISO à <b>1600–3200</b> jusqu'à ce que l'écran soit assez clair.",
+    "Pose la caméra sur un support stable.",
+    "Utilise le retardateur (2 s), puis déclenche."]}
+];
+const camGuides=document.getElementById('cam-guides');
+CAM_GUIDES.forEach((G,idx)=>{
+  const d=document.createElement('details');d.className='lesson guide';if(idx===0)d.open=true;
+  d.innerHTML=`<summary><span class="num">${G.n}</span>${G.t}
+      <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
+    <div class="body">
+      <div class="verify"><button class="speak guideSpeak" type="button" aria-label="Lire la procédure">${SPK_SVG}</button></div>
+      <ol>${G.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+    </div>`;
+  d.querySelector('.guideSpeak').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
+    const plain=G.steps.map(s=>s.replace(/<[^>]+>/g,'')).join('. ');
+    speak(G.t+'. '+plain, e.currentTarget);});
+  camGuides.appendChild(d);
+});
+
+/* ============ Posemètre vivant (live) + Détective photo ============ */
+function measure(ctx,W,H){
+  const data=ctx.getImageData(0,0,W,H).data;
+  let sum=0,min=255,max=0; const n=W*H;
+  let rS=0,gS=0,bS=0;
+  for(let p=0;p<data.length;p+=4){
+    const L=0.2126*data[p]+0.7152*data[p+1]+0.0722*data[p+2];
+    sum+=L; if(L<min)min=L; if(L>max)max=L;
+    rS+=data[p]; gS+=data[p+1]; bS+=data[p+2];
+  }
+  return {mean:sum/n, contrast:max-min, r:rS/n, g:gS/n, b:bS/n};
+}
+function suggestSettings(mean){
+  if(mean<55) return {label:"Très sombre", chips:["f/3.5","1/60 s","ISO 3200"],
+    tip:"Il fait vraiment sombre. Ouvre au maximum, monte fortement l'ISO et pose la caméra pour éviter le flou."};
+  if(mean<95) return {label:"Faible lumière", chips:["f/3.5","1/125 s","ISO 1600"],
+    tip:"Lumière douce. Garde l'ouverture grande et monte l'ISO pour rester net à main levée."};
+  if(mean<150) return {label:"Lumière équilibrée", chips:["f/5.6","1/250 s","ISO 400"],
+    tip:"Belle lumière ! Des réglages moyens suffisent. Concentre-toi sur la composition."};
+  if(mean<200) return {label:"Bien éclairé", chips:["f/8","1/500 s","ISO 200"],
+    tip:"Beaucoup de lumière. Ferme un peu l'ouverture pour plus de netteté, baisse l'ISO."};
+  return {label:"Très lumineux", chips:["f/11","1/1000 s","ISO 100"],
+    tip:"Scène très claire (plein soleil). Ferme bien l'ouverture et garde l'ISO au minimum."};
+}
+function ambiance(r,g,b){
+  if(r>g && r>b && (r-b)>22) return "ambiance chaude, dorée — parfaite au coucher du soleil";
+  if(b>r && (b-r)>18) return "ambiance froide, bleutée — lumière d'ombre ou de matin";
+  return "ambiance neutre, équilibrée";
+}
+
+const lumVideo=document.getElementById('lumVideo');
+const lumCanvas=document.getElementById('lumCanvas');
+const lumEmpty=document.getElementById('lumEmpty');
+const lumMeter=document.getElementById('lumMeter');
+const lumNeedle=document.getElementById('lumNeedle');
+const lumResult=document.getElementById('lumResult');
+const lumNote=document.getElementById('lumNote');
+const lumStart=document.getElementById('lumStart');
+const lumStop=document.getElementById('lumStop');
+let lumStream=null, lumTimer=null, lumLastTip="";
+
+function showLumNote(msg){
+  lumNote.hidden=false;
+  lumNote.className="lum-warn";
+  lumNote.innerHTML=msg+' <button class="btn" type="button" id="lumGoDet" style="margin-top:8px">🕵️ Ouvrir le Détective photo</button>';
+  const go=document.getElementById('lumGoDet');
+  if(go) go.addEventListener('click',()=>{
+    document.getElementById('detFile').scrollIntoView({behavior:'smooth',block:'center'});
+  });
+}
+async function startLive(){
+  const insecure = !window.isSecureContext || location.protocol==='file:';
+  if(insecure || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia){
+    showLumNote("La caméra en direct a besoin d'une connexion sécurisée (https). Sur iPad, elle ne marche pas quand l'app est ouverte comme un simple fichier. Mets l'app en ligne, ou utilise le Détective photo juste en dessous — il fonctionne partout, même hors ligne.");
+    return;
+  }
+  try{
+    lumStream=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'},audio:false});
+    lumVideo.srcObject=lumStream; await lumVideo.play();
+    lumEmpty.hidden=true; lumMeter.hidden=false; lumResult.hidden=false;
+    lumStart.hidden=true; lumStop.hidden=false; lumNote.hidden=true; lumNote.innerHTML="";
+    loopLive();
+  }catch(e){
+    showLumNote("Accès caméra refusé ou indisponible. Vérifie l'autorisation caméra dans les réglages de Safari, ou utilise le Détective photo ci-dessous.");
+  }
+}
+function loopLive(){
+  const W=80, H=60;
+  lumCanvas.width=W; lumCanvas.height=H;
+  const ctx=lumCanvas.getContext('2d');
+  if(lumVideo.videoWidth){
+    ctx.drawImage(lumVideo,0,0,W,H);
+    const m=measure(ctx,W,H);
+    const pct=Math.max(0,Math.min(100,Math.round(m.mean/255*100)));
+    lumNeedle.style.left=pct+'%';
+    const s=suggestSettings(m.mean);
+    lumResult.innerHTML=`<h4>${s.label}</h4>
+      <div class="lum-chips">${s.chips.map(c=>`<span class="lum-chip">${c}</span>`).join("")}</div>
+      <p class="lum-tip">${s.tip} (${ambiance(m.r,m.g,m.b)}).</p>`;
+    lumLastTip=`${s.label}. Réglages proposés : ${s.chips.join(', ')}. ${s.tip}`;
+  }
+  if(lumStream) lumTimer=setTimeout(loopLive,350);
+}
+function stopLive(){
+  if(lumTimer) clearTimeout(lumTimer);
+  if(lumStream){ lumStream.getTracks().forEach(t=>t.stop()); lumStream=null; }
+  lumVideo.srcObject=null;
+  lumEmpty.hidden=false; lumMeter.hidden=true;
+  lumStart.hidden=false; lumStop.hidden=true;
+}
+lumStart.addEventListener('click',startLive);
+lumStop.addEventListener('click',stopLive);
+if(!window.isSecureContext || location.protocol==='file:'){
+  lumStart.textContent="🎥 Démarrer le live (en ligne)";
+}
+document.getElementById('lumSpeak').addEventListener('click',e=>{
+  speak(lumLastTip||"Démarre d'abord le live pour mesurer la lumière.", e.currentTarget);
+});
+
+const detInput=document.getElementById('detInput');
+const detCanvas=document.getElementById('detCanvas');
+const detPreview=document.getElementById('detPreview');
+const detResult=document.getElementById('detResult');
+let detLastText="";
+document.getElementById('detFile').addEventListener('click',()=>detInput.click());
+document.getElementById('detSpeak').addEventListener('click',e=>{
+  speak(detLastText||"Charge d'abord une photo à analyser.", e.currentTarget);
+});
+detInput.addEventListener('change',()=>{
+  const f=detInput.files && detInput.files[0]; if(!f) return;
+  const img=new Image();
+  img.onload=()=>{ detective(img); URL.revokeObjectURL(img.src); };
+  img.src=URL.createObjectURL(f);
+});
+function detective(img){
+  detPreview.innerHTML=''; const pv=new Image(); pv.src=img.src; detPreview.appendChild(pv);
+  const grid=document.createElement('div'); grid.className='an-grid'; detPreview.appendChild(grid);
+  const W=140,H=Math.max(1,Math.round(W*img.height/img.width));
+  detCanvas.width=W; detCanvas.height=H;
+  const ctx=detCanvas.getContext('2d'); ctx.drawImage(img,0,0,W,H);
+  const m=measure(ctx,W,H);
+  const s=suggestSettings(m.mean);
+  const amb=ambiance(m.r,m.g,m.b);
+  const expoVerdict = m.mean<70?"plutôt sombre" : m.mean>185?"très lumineuse" : "bien exposée";
+  const contrastVerdict = m.contrast<90?"douce et plate" : m.contrast>230?"très contrastée" : "au bon contraste";
+  detResult.innerHTML=`
+    <div class="lum-result" style="margin-top:14px">
+      <h4>🕵️ Mon enquête</h4>
+      <p class="lum-tip">Cette photo est <b>${expoVerdict}</b> et <b>${contrastVerdict}</b>. C'est une ${amb}.</p>
+      <p class="lum-tip" style="margin-top:8px">Réglages probables au moment de la prise :</p>
+      <div class="lum-chips">${s.chips.map(c=>`<span class="lum-chip">${c}</span>`).join("")}</div>
+      <p class="lum-tip">${s.tip}</p>
+    </div>`;
+  detLastText=`Enquête. Cette photo est ${expoVerdict} et ${contrastVerdict}. C'est une ${amb}. Réglages probables : ${s.chips.join(', ')}. ${s.tip}`;
+}
+
+document.querySelectorAll('nav.tabs button').forEach(b=>{
+  if(b.dataset.tab!=='studio2') b.addEventListener('click',()=>{ if(lumStream) stopLive(); });
+});
+
+render();
+</script>
+</body>
+</html>
