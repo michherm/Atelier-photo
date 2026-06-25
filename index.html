@@ -210,6 +210,16 @@
   .astuce{background:var(--paper-2);border-radius:8px;padding:10px 12px;font-size:14px;margin-top:8px}
   .astuce b{color:var(--accent)}
 
+  /* Vidéo-Buttons (YouTube) */
+  .vidrow{margin-top:14px}
+  .vidbtn{display:inline-flex;align-items:center;gap:7px;text-decoration:none;font-family:var(--font-body);
+    font-weight:700;font-size:13.5px;color:#fff;background:linear-gradient(100deg,#e0506e,#d63a52);
+    border:none;border-radius:22px;padding:9px 16px;box-shadow:var(--shadow)}
+  .vidbtn svg{width:18px;height:18px}
+  .vidbtn:hover{filter:brightness(1.06)}
+  .vidbtn:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+  .vidbtn-inline{text-decoration:none}
+
   /* Vorlese-Knopf */
   .speak{margin-left:auto;flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
     background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--teal)}
@@ -436,6 +446,7 @@
         <div class="toolbar">
           <button class="btn" id="gridBtn" type="button">⊞ Grille des tiers</button>
           <button class="btn" id="resetBtn" type="button">↺ Réinitialiser</button>
+          <a class="btn vidbtn-inline" href="https://www.youtube.com/watch?v=R1pYtnGSHaQ" target="_blank" rel="noopener">🎥 Vidéo : le triangle</a>
         </div>
       </div>
 
@@ -550,6 +561,7 @@
       <div class="cam-toolbar">
         <button class="btn" id="camPhotoBtn" type="button">📷 Photo de ma caméra</button>
         <button class="btn" id="camDrawBtn" type="button">✏️ Revenir au schéma</button>
+        <a class="btn vidbtn-inline" href="https://www.youtube.com/watch?v=znkUj8DWrFI" target="_blank" rel="noopener">🎥 Vidéo : prise en main</a>
       </div>
       <input type="file" id="camPhotoInput" accept="image/*" capture="environment" hidden>
       <p class="cam-hint" id="camPhotoHint" hidden>Astuce : prends la photo bien à plat, de face, puis touche les points.</p>
@@ -751,21 +763,47 @@ PRESETS.forEach(p=>{
   pc.appendChild(b);
 });
 
+/* ---------------- Vidéos YouTube (françaises, vérifiées) ---------------- */
+// id = vidéo précise vérifiée ; q = recherche YouTube de secours (toujours valide)
+const VIDEOS = {
+  triangle:   {id:"R1pYtnGSHaQ", q:"triangle d'exposition photo débutant français"},
+  tiers:      {id:"GYUGxZ2vxJQ", q:"règle des tiers composition photo français"},
+  lignes:     {q:"lignes directrices composition photo français tuto"},
+  lumiere:    {q:"lumière heure dorée photographie français débutant"},
+  cadre:      {q:"simplifier le cadre composition photo français"},
+  portrait:   {q:"réglages portrait flou arrière-plan photo français débutant"},
+  paysage:    {q:"réglages photo paysage net français débutant"},
+  sport:      {q:"figer le mouvement vitesse obturation photo sport français"},
+  nuit:       {q:"photo de nuit réglages débutant français"},
+  camera:     {id:"znkUj8DWrFI", q:"Canon EOS 2000D prise en main français débutant"},
+  reflexmenu: {id:"2QEPgJ-fXfw", q:"régler son reflex Canon menu français"}
+};
+function ytUrl(v){
+  if(v && v.id) return "https://www.youtube.com/watch?v="+v.id;
+  if(v && v.q)  return "https://www.youtube.com/results?search_query="+encodeURIComponent(v.q);
+  return "https://www.youtube.com/results?search_query="+encodeURIComponent("photographie débutant français");
+}
+const VID_SVG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="15" height="14" rx="3"/><path d="M17 9l5-3v12l-5-3z"/></svg>';
+function videoBtn(key){
+  const v=VIDEOS[key]; if(!v) return "";
+  return `<a class="vidbtn" href="${ytUrl(v)}" target="_blank" rel="noopener" aria-label="Voir une vidéo explicative sur YouTube">${VID_SVG}<span>Vidéo</span></a>`;
+}
+
 /* ---------------- Leçons de composition ---------------- */
 const LESSONS=[
-  {n:1,t:"La règle des tiers",
+  {n:1,t:"La règle des tiers",vid:"tiers",
    svg:`<svg class="svgdemo" viewBox="0 0 300 180"><rect width="300" height="180" fill="#cfe0ec"/><rect y="120" width="300" height="60" fill="#7fae6e"/><circle cx="200" cy="60" r="14" fill="#f4b740"/><g stroke="#c2410c" stroke-width="1.5" stroke-dasharray="4 4" opacity=".8"><line x1="100" y1="0" x2="100" y2="180"/><line x1="200" y1="0" x2="200" y2="180"/><line x1="0" y1="60" x2="300" y2="60"/><line x1="0" y1="120" x2="300" y2="120"/></g><circle cx="200" cy="60" r="20" fill="none" stroke="#c2410c" stroke-width="2"/></svg>`,
    p:["Imagine deux lignes verticales et deux horizontales qui découpent l'image en neuf cases. Place ton sujet sur une intersection, pas au centre.","Un horizon se pose sur la ligne du haut ou du bas — jamais en plein milieu."],
    a:"Active la grille dans ton appareil (et dans l'onglet « Le triangle » ici) pour t'entraîner l'œil."},
-  {n:2,t:"Les lignes directrices",
+  {n:2,t:"Les lignes directrices",vid:"lignes",
    svg:`<svg class="svgdemo" viewBox="0 0 300 180"><rect width="300" height="180" fill="#e7dcc4"/><polygon points="130,180 170,180 200,30 100,30" fill="#b9a988"/><line x1="130" y1="180" x2="155" y2="30" stroke="#8a7a5c" stroke-width="2"/><line x1="170" y1="180" x2="155" y2="30" stroke="#8a7a5c" stroke-width="2"/><circle cx="155" cy="40" r="9" fill="#c2410c"/></svg>`,
    p:["Routes, rails, clôtures, rivières : utilise ces lignes pour conduire le regard vers ton sujet.","Elles donnent de la profondeur et rendent l'image vivante."],
    a:"Place le point de fuite (là où les lignes se rejoignent) sur une intersection des tiers."},
-  {n:3,t:"La lumière fait l'image",
+  {n:3,t:"La lumière fait l'image",vid:"lumiere",
    svg:`<svg class="svgdemo" viewBox="0 0 300 180"><defs><linearGradient id="g" x1="0" x2="1"><stop offset="0" stop-color="#f4c98a"/><stop offset="1" stop-color="#5b4636"/></linearGradient></defs><rect width="300" height="180" fill="url(#g)"/><circle cx="40" cy="40" r="22" fill="#fff3d6"/><ellipse cx="180" cy="120" rx="40" ry="16" fill="#3a2c20" opacity=".5"/><rect x="160" y="70" width="36" height="55" rx="6" fill="#6b5240"/></svg>`,
    p:["La meilleure lumière n'est pas à midi. Vise « l'heure dorée » : juste après le lever ou avant le coucher du soleil.","Lumière de côté = relief et texture. Lumière de face = image plate."],
    a:"Évite le soleil dur de midi : les ombres sont trop noires et les visages plissent les yeux."},
-  {n:4,t:"Simplifier le cadre",
+  {n:4,t:"Simplifier le cadre",vid:"cadre",
    svg:`<svg class="svgdemo" viewBox="0 0 300 180"><rect width="300" height="180" fill="#dfe7e3"/><rect x="120" y="55" width="60" height="80" rx="8" fill="#c2410c"/><circle cx="150" cy="40" r="16" fill="#c2410c"/></svg>`,
    p:["Un sujet, un message. Approche-toi ou change d'angle pour enlever ce qui ne sert à rien.","Surveille les bords : un poteau « qui pousse » dans la tête, une branche qui dépasse — recadre."],
    a:"Avant de déclencher, fais le tour du cadre des yeux : que peut-on retirer ?"}
@@ -775,7 +813,7 @@ LESSONS.forEach((L,idx)=>{
   const d=document.createElement('details');d.className='lesson';if(idx===0)d.open=true;
   d.innerHTML=`<summary><span class="num">${L.n}</span>${L.t}
     <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
-    <div class="body"><div class="demo">${L.svg}</div>${L.p.map(x=>`<p>${x}</p>`).join("")}<div class="astuce"><b>Astuce :</b> ${L.a}</div></div>`;
+    <div class="body"><div class="demo">${L.svg}</div>${L.p.map(x=>`<p>${x}</p>`).join("")}<div class="astuce"><b>Astuce :</b> ${L.a}</div><div class="vidrow">${videoBtn(L.vid)}</div></div>`;
   lc.appendChild(d);
 });
 
@@ -795,17 +833,17 @@ CHECK.forEach((c,i)=>{
 
 /* ---------------- Terrain cards ---------------- */
 const TERRAIN=[
-  {n:"A",t:"Portrait",p:["Mode Av (priorité ouverture) ou M.","f/3.5 et zoom à 55 mm pour un fond flou.","Mise au point sur l'œil. Vitesse mini 1/125 s."]},
-  {n:"B",t:"Paysage",p:["f/8–f/11 pour la netteté du premier plan au fond.","ISO 100. Trépied si la lumière baisse.","Soigne l'horizon et le premier plan."]},
-  {n:"C",t:"Sport / animaux",p:["Vitesse 1/500 s ou plus rapide.","Mode rafale + autofocus continu (AI Servo).","Monte l'ISO si besoin pour garder la vitesse."]},
-  {n:"D",t:"Nuit / faible lumière",p:["Ouverture max (f/3.5), ISO 1600–6400.","Trépied + retardateur pour les paysages de nuit.","Accepte un peu de bruit : mieux que le flou."]}
+  {n:"A",t:"Portrait",vid:"portrait",p:["Mode Av (priorité ouverture) ou M.","f/3.5 et zoom à 55 mm pour un fond flou.","Mise au point sur l'œil. Vitesse mini 1/125 s."]},
+  {n:"B",t:"Paysage",vid:"paysage",p:["f/8–f/11 pour la netteté du premier plan au fond.","ISO 100. Trépied si la lumière baisse.","Soigne l'horizon et le premier plan."]},
+  {n:"C",t:"Sport / animaux",vid:"sport",p:["Vitesse 1/500 s ou plus rapide.","Mode rafale + autofocus continu (AI Servo).","Monte l'ISO si besoin pour garder la vitesse."]},
+  {n:"D",t:"Nuit / faible lumière",vid:"nuit",p:["Ouverture max (f/3.5), ISO 1600–6400.","Trépied + retardateur pour les paysages de nuit.","Accepte un peu de bruit : mieux que le flou."]}
 ];
 const tc=document.getElementById('terrain-cards');
 TERRAIN.forEach((T,idx)=>{
   const d=document.createElement('details');d.className='lesson';if(idx===0)d.open=true;
   d.innerHTML=`<summary><span class="num">${T.n}</span>${T.t}
     <svg class="chev" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></summary>
-    <div class="body">${T.p.map(x=>`<p>• ${x}</p>`).join("")}</div>`;
+    <div class="body">${T.p.map(x=>`<p>• ${x}</p>`).join("")}<div class="vidrow">${videoBtn(T.vid)}</div></div>`;
   tc.appendChild(d);
 });
 
@@ -859,19 +897,19 @@ document.querySelectorAll('#lessons .lesson, #terrain-cards .lesson').forEach(d=
 /* ============ Exercices guidés ============ */
 // cible : indices [ap, sh, iso] ; tolérance par champ
 const EXOS=[
-  {n:1,t:"Un portrait avec fond flou",
+  {n:1,t:"Un portrait avec fond flou",vid:"portrait",
    goal:"Objectif : isoler ton sujet",
    consigne:"Tu photographies une personne. Tu veux que le visage soit net et l'arrière-plan doux et flou. Ouvre l'ouverture au maximum et garde une vitesse nette à main levée.",
    chips:["f/3.5","1/125 s","ISO 200"], target:{ap:0, sh:3, iso:1}},
-  {n:2,t:"Un paysage tout net",
+  {n:2,t:"Un paysage tout net",vid:"paysage",
    goal:"Objectif : netteté du premier plan au fond",
    consigne:"Tu photographies des collines. Tout doit être net, du premier plan jusqu'à l'horizon. Ferme l'ouverture et garde l'ISO le plus bas.",
    chips:["f/11","1/100 s","ISO 100"], target:{ap:4, sh:2, iso:0}},
-  {n:3,t:"Figer un mouvement",
+  {n:3,t:"Figer un mouvement",vid:"sport",
    goal:"Objectif : arrêter l'action",
    consigne:"Un chien court vers toi. Tu veux le figer, sans flou de bougé. Choisis une vitesse rapide et monte l'ISO pour garder la lumière.",
    chips:["f/4.5","1/1000 s","ISO 800"], target:{ap:1, sh:6, iso:3}},
-  {n:4,t:"Une scène de nuit",
+  {n:4,t:"Une scène de nuit",vid:"nuit",
    goal:"Objectif : capter peu de lumière",
    consigne:"Il fait sombre. Tu veux une image assez claire sans trépied. Ouvre au maximum et monte fortement l'ISO.",
    chips:["f/3.5","1/60 s","ISO 3200"], target:{ap:0, sh:1, iso:5}}
@@ -890,6 +928,7 @@ EXOS.forEach((E,idx)=>{
         <button class="speak exoSpeak" type="button" aria-label="Lire la consigne">${SPK_SVG}</button>
       </div>
       <p class="status" style="margin-top:10px"></p>
+      <div class="vidrow">${videoBtn(E.vid)}</div>
     </div>`;
   const status=d.querySelector('.status');
   d.querySelector('.verifyBtn').addEventListener('click',()=>{
@@ -1085,25 +1124,25 @@ camPhotoInput.addEventListener('change',()=>{
 });
 
 const CAM_GUIDES=[
-  {n:"A",t:"Portrait (fond flou)",steps:[
+  {n:"A",t:"Portrait (fond flou)",vid:"portrait",steps:[
     "Tourne la molette des modes sur <b>Av</b>.",
     "Avec la molette principale, choisis <b>f/3.5</b> (le plus petit chiffre).",
     "Tourne la bague de zoom vers <b>55 mm</b>.",
     "Vise l'œil du sujet, appuie à moitié pour la mise au point.",
     "Vérifie que la vitesse est au moins 1/125 s, puis déclenche."]},
-  {n:"B",t:"Paysage (tout net)",steps:[
+  {n:"B",t:"Paysage (tout net)",vid:"paysage",steps:[
     "Molette des modes sur <b>Av</b>.",
     "Choisis <b>f/8</b> à <b>f/11</b> avec la molette principale.",
     "Règle l'ISO sur <b>100</b>.",
     "Zoom vers <b>18 mm</b> pour un grand angle.",
     "Tiens la caméra bien stable, puis déclenche."]},
-  {n:"C",t:"Sport / mouvement",steps:[
+  {n:"C",t:"Sport / mouvement",vid:"sport",steps:[
     "Molette des modes sur <b>Tv</b>.",
     "Choisis une vitesse rapide : <b>1/500 s</b> ou plus.",
     "Mets l'ISO sur <b>Auto</b>.",
     "Active la rafale et l'autofocus continu (AI Servo) dans le menu.",
     "Suis le sujet, appuie à moitié puis déclenche en rafale."]},
-  {n:"D",t:"Nuit / faible lumière",steps:[
+  {n:"D",t:"Nuit / faible lumière",vid:"nuit",steps:[
     "Molette des modes sur <b>M</b> (manuel).",
     "Ouverture <b>f/3.5</b>, vitesse <b>1/60 s</b>.",
     "Monte l'ISO à <b>1600–3200</b> jusqu'à ce que l'écran soit assez clair.",
@@ -1118,6 +1157,7 @@ CAM_GUIDES.forEach((G,idx)=>{
     <div class="body">
       <div class="verify"><button class="speak guideSpeak" type="button" aria-label="Lire la procédure">${SPK_SVG}</button></div>
       <ol>${G.steps.map(s=>`<li>${s}</li>`).join("")}</ol>
+      <div class="vidrow">${videoBtn(G.vid)}</div>
     </div>`;
   d.querySelector('.guideSpeak').addEventListener('click',e=>{e.preventDefault();e.stopPropagation();
     const plain=G.steps.map(s=>s.replace(/<[^>]+>/g,'')).join('. ');
