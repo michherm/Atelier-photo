@@ -352,35 +352,66 @@
 
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
-  /* ===== Intro animé (au démarrage) ===== */
-  .intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;
+  /* ===== Intro animé (au démarrage) — style carte d'anniversaire ===== */
+  .intro{position:fixed;inset:0;z-index:1000;overflow:hidden;
     background:
-      radial-gradient(700px 500px at 80% 10%, #fbdce8 0%, transparent 55%),
-      radial-gradient(600px 460px at 10% 90%, #e4e0f4 0%, transparent 50%),
+      radial-gradient(720px 520px at 82% 8%, #fbdce8 0%, transparent 55%),
+      radial-gradient(640px 480px at 8% 92%, #e4e0f4 0%, transparent 52%),
+      radial-gradient(600px 460px at 50% 50%, #fff8ee 0%, transparent 60%),
       #f7f0e3;
-    opacity:1;transition:opacity .5s ease}
+    opacity:1;transition:opacity .6s ease}
   .intro.hide{opacity:0;pointer-events:none}
-  .intro-card{position:relative;max-width:460px;width:88%;text-align:center;padding:8px 18px 26px}
-  .intro-close{position:absolute;top:-2px;right:-2px;width:40px;height:40px;border-radius:50%;
-    border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;font-size:20px;
-    display:grid;place-items:center;line-height:1}
+  /* schwebende Hintergrund-Motive */
+  .intro .float{position:absolute;opacity:0;animation:floatIn 1s ease forwards, sway 6s ease-in-out infinite;
+    animation-delay:var(--d,0s), calc(var(--d,0s) + 1s)}
+  .intro .float svg{width:100%;height:100%;filter:drop-shadow(0 6px 12px rgba(120,60,90,.18))}
+  @keyframes floatIn{from{opacity:0;transform:translateY(26px) scale(.7) rotate(var(--r,0deg))}
+    to{opacity:.9;transform:translateY(0) scale(1) rotate(var(--r,0deg))}}
+  @keyframes sway{0%,100%{transform:translateY(0) rotate(var(--r,0deg))}
+    50%{transform:translateY(-12px) rotate(calc(var(--r,0deg) + 3deg))}}
+  /* Glitzer */
+  .intro .spark{position:absolute;width:14px;height:14px;opacity:0;
+    animation:twinkle 2.4s ease-in-out infinite;animation-delay:var(--sd,0s)}
+  .intro .spark::before{content:"";position:absolute;inset:0;
+    background:radial-gradient(var(--gold) 0,transparent 60%);
+    clip-path:polygon(50% 0,58% 42%,100% 50%,58% 58%,50% 100%,42% 58%,0 50%,42% 42%)}
+  @keyframes twinkle{0%,100%{opacity:0;transform:scale(.4)}50%{opacity:.95;transform:scale(1)}}
+
+  .intro-card{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:24px;z-index:3}
+  .intro-close{position:absolute;top:14px;right:14px;width:42px;height:42px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(255,255,255,.8);color:var(--muted);cursor:pointer;
+    font-size:20px;display:grid;place-items:center;line-height:1;z-index:5;backdrop-filter:blur(4px)}
   .intro-close:hover{color:var(--accent);border-color:var(--accent)}
-  .intro-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
-  .intro-row .it{width:46px;height:46px;opacity:0;transform:translateY(12px) rotate(var(--r,0deg));
-    animation:pop .5s ease forwards;animation-delay:var(--d,0s)}
-  @keyframes pop{to{opacity:1;transform:translateY(0) rotate(var(--r,0deg))}}
-  .intro h2{font-family:var(--font-disp);font-style:italic;font-size:30px;margin:14px 0 2px;
-    background:linear-gradient(100deg,var(--accent),var(--accent-2) 55%,var(--gold));
+
+  .intro .joyeux{font-family:var(--font-body);font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+    font-size:13px;color:var(--accent);opacity:0;animation:rise .8s ease forwards;animation-delay:.3s}
+  .intro .joyeux .age{font-family:var(--font-disp);font-style:italic;font-size:18px;color:var(--gold);letter-spacing:0}
+  .intro .bigname{font-family:var(--font-disp);font-style:italic;font-size:clamp(46px,16vw,84px);line-height:.95;
+    margin:6px 0 2px;opacity:0;animation:rise 1s ease forwards;animation-delay:.6s;
+    background:linear-gradient(100deg,var(--accent),var(--accent-2) 45%,var(--gold));
     -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-  .intro .sub{color:var(--muted);font-size:15px;margin:0 0 6px}
-  .intro .ded{font-family:var(--font-disp);font-style:italic;color:var(--accent);font-size:15px;margin:10px 0 18px}
-  .intro .start{font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;border:none;cursor:pointer;
-    border-radius:24px;padding:13px 28px;background:linear-gradient(100deg,var(--accent),var(--accent-2));
-    box-shadow:var(--shadow)}
-  .intro .start:hover{filter:brightness(1.06)}
-  .intro .noshow{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;
-    font-size:13.5px;color:var(--muted);cursor:pointer}
+  .intro .hearts{font-size:20px;opacity:0;animation:rise .8s ease forwards;animation-delay:1s}
+  .intro .hearts span{display:inline-block;animation:beat 1.4s ease-in-out infinite}
+  .intro .hearts span:nth-child(2){animation-delay:.2s}
+  @keyframes beat{0%,100%{transform:scale(1)}30%{transform:scale(1.28)}}
+  .intro .welc{color:var(--muted);font-size:15.5px;margin:16px 0 2px;max-width:34ch;opacity:0;
+    animation:rise .8s ease forwards;animation-delay:1.3s}
+  .intro .ded{font-family:var(--font-disp);font-style:italic;color:var(--accent);font-size:16px;
+    margin:14px 0 22px;opacity:0;animation:rise .8s ease forwards;animation-delay:1.7s}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+  .intro .start{font-family:var(--font-body);font-weight:700;font-size:17px;color:#fff;border:none;cursor:pointer;
+    border-radius:26px;padding:15px 34px;background:linear-gradient(100deg,var(--accent),var(--accent-2));
+    box-shadow:0 10px 26px -8px rgba(198,75,134,.6);opacity:0;
+    animation:rise .8s ease forwards, pulse 2.2s ease-in-out infinite;animation-delay:2s, 2.8s}
+  @keyframes pulse{0%,100%{box-shadow:0 10px 26px -8px rgba(198,75,134,.6)}
+    50%{box-shadow:0 10px 34px -4px rgba(198,75,134,.85)}}
+  .intro .start:hover{filter:brightness(1.07)}
+  .intro .noshow{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:18px;
+    font-size:13px;color:var(--muted);cursor:pointer;opacity:0;animation:rise .8s ease forwards;animation-delay:2.3s}
   .intro .noshow input{width:18px;height:18px;accent-color:var(--teal)}
+  .intro .sound{position:absolute;bottom:16px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted);
+    opacity:0;animation:rise .8s ease forwards;animation-delay:2.5s}
 
   /* ===== Bouton d'aide (toujours visible) ===== */
   .helpfab{position:fixed;right:16px;bottom:16px;z-index:900;width:52px;height:52px;border-radius:50%;
@@ -1509,34 +1540,87 @@ decoBR.innerHTML=VIG.lavande; document.body.appendChild(decoBR);
 function prefGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
 function prefSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
 
-/* ---- Intro ---- */
+/* ---- Intro animé (style carte) ---- */
+function playMelody(){
+  // petite mélodie douce générée (Web Audio) — joyeuse, discrète
+  let ctx;
+  try{ ctx=new (window.AudioContext||window.webkitAudioContext)(); }catch(e){ return; }
+  if(!ctx) return;
+  const now=ctx.currentTime;
+  const master=ctx.createGain();
+  master.gain.value=0.0001; master.connect(ctx.destination);
+  master.gain.exponentialRampToValueAtTime(0.18, now+0.1);
+  // mélodie (Hz) — une phrase tendre, façon comptine
+  const notes=[
+    [523.25,0.0,0.34],[659.25,0.34,0.34],[783.99,0.68,0.40],[659.25,1.10,0.30],
+    [587.33,1.42,0.34],[659.25,1.78,0.50],[523.25,2.34,0.30],[587.33,2.66,0.30],
+    [659.25,2.98,0.55],[783.99,3.58,0.30],[880.00,3.92,0.60]
+  ];
+  notes.forEach(([f,t,dur])=>{
+    const o=ctx.createOscillator(), g=ctx.createGain();
+    o.type='triangle'; o.frequency.value=f;
+    // léger vibrato chaleureux
+    g.gain.setValueAtTime(0.0001, now+t);
+    g.gain.exponentialRampToValueAtTime(0.5, now+t+0.04);
+    g.gain.exponentialRampToValueAtTime(0.0001, now+t+dur);
+    o.connect(g); g.connect(master);
+    o.start(now+t); o.stop(now+t+dur+0.05);
+    // une douce harmonie une tierce en dessous
+    const o2=ctx.createOscillator(), g2=ctx.createGain();
+    o2.type='sine'; o2.frequency.value=f*0.8;
+    g2.gain.setValueAtTime(0.0001, now+t);
+    g2.gain.exponentialRampToValueAtTime(0.22, now+t+0.05);
+    g2.gain.exponentialRampToValueAtTime(0.0001, now+t+dur);
+    o2.connect(g2); g2.connect(master);
+    o2.start(now+t); o2.stop(now+t+dur+0.05);
+  });
+  // fondu final
+  master.gain.setValueAtTime(0.18, now+4.4);
+  master.gain.exponentialRampToValueAtTime(0.0001, now+5.2);
+  setTimeout(()=>{ try{ctx.close();}catch(e){} }, 6000);
+}
+
 function buildIntro(){
   const intro=document.createElement('div');
   intro.className='intro'; intro.id='intro';
-  const motifs=[
-    {v:"coeurfr",r:-8},{v:"camera",r:5},{v:"eiffel",r:-4},
-    {v:"lavande",r:6},{v:"montpellier",r:-5},{v:"velo",r:4},{v:"coeurde",r:-7}
+  // schwebende Motive (Position %, Größe px, Rotation, Delay)
+  const floats=[
+    ["eiffel",       8,  16, 78, -6,  0.2],
+    ["montpellier",  78, 20, 70,  5,  0.4],
+    ["saarbruecken", 12, 70, 80, -4,  0.6],
+    ["lavande",      85, 66, 66,  6,  0.5],
+    ["velo",         70, 80, 76,  4,  0.8],
+    ["cafe",         18, 40, 56, -8,  0.7],
+    ["livre",        82, 44, 56,  7,  0.9],
+    ["coeurfr",      4,  44, 46, -10, 0.3],
+    ["coeurde",      92, 38, 46,  10, 0.35]
+  ];
+  const sparks=[
+    [22,22,0],[68,14,.6],[40,30,1.1],[80,52,.4],[30,72,.9],[60,68,1.4],[50,12,.7],[12,56,1.2]
   ];
   intro.innerHTML=`
+    ${floats.map(([v,l,t,s,r,d])=>`<div class="float" style="left:${l}%;top:${t}%;width:${s}px;height:${s}px;--r:${r}deg;--d:${d}s">${VIG[v]}</div>`).join("")}
+    ${sparks.map(([l,t,d])=>`<div class="spark" style="left:${l}%;top:${t}%;--sd:${d}s"></div>`).join("")}
+    <button class="intro-close" id="introX" aria-label="Fermer">✕</button>
     <div class="intro-card">
-      <button class="intro-close" id="introX" aria-label="Fermer">✕</button>
-      <div class="intro-row">
-        ${motifs.map((m,i)=>`<div class="it" style="--r:${m.r}deg;--d:${0.08*i}s">${VIG[m.v]}</div>`).join("")}
-      </div>
-      <h2>Bonjour Elisa !</h2>
-      <p class="sub">Bienvenue dans ton atelier photo · Willkommen in deinem Foto-Atelier</p>
+      <div class="joyeux">Joyeux <span class="age">18ᵉ</span> anniversaire</div>
+      <div class="bigname">Elisa</div>
+      <div class="hearts"><span>🇫🇷</span> ♥ <span>🇩🇪</span></div>
+      <p class="welc">Bienvenue dans ton atelier photo<br>Willkommen in deinem Foto-Atelier</p>
       <p class="ded">« Crois en toi. Suis tes rêves. » — ton Papa ♥</p>
       <button class="start" id="introStart">Commencer ✨</button>
       <label class="noshow"><input type="checkbox" id="introNoShow"> Ne plus afficher au démarrage</label>
+      <div class="sound">🎵 Une petite mélodie t'accueille</div>
     </div>`;
   document.body.appendChild(intro);
-  function close(){
+  function close(withSound){
+    if(withSound) playMelody();
     intro.classList.add('hide');
     if(document.getElementById('introNoShow').checked) prefSet('elisa_intro','off');
-    setTimeout(()=>intro.remove(),550);
+    setTimeout(()=>intro.remove(),650);
   }
-  intro.querySelector('#introStart').addEventListener('click',close);
-  intro.querySelector('#introX').addEventListener('click',close);
+  intro.querySelector('#introStart').addEventListener('click',()=>close(true));
+  intro.querySelector('#introX').addEventListener('click',()=>close(false));
 }
 if(prefGet('elisa_intro')!=='off'){ buildIntro(); }
 
