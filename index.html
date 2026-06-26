@@ -242,6 +242,36 @@
   @media(max-width:760px){.corner-deco{display:none}}
   .wrap{position:relative;z-index:1}
 
+  /* ===== Scrapbook: verteilte Aquarell-Motive ===== */
+  /* schwebende Motive, die im Panel frei verteilt sind */
+  .scatter{position:absolute;pointer-events:none;opacity:.42;z-index:0;filter:saturate(.92)}
+  .scatter svg{width:100%;height:100%;display:block}
+  .panel{position:relative}
+  .panel > *{position:relative;z-index:1}
+  .panel .scatter{z-index:0}
+
+  /* Intro-Collage oben (über den Tabs) */
+  .scrapintro{position:relative;margin:6px 0 18px;padding:18px 16px;border-radius:18px;overflow:hidden;
+    background:linear-gradient(120deg,#fff7ef,#fdeef4 55%,#ede6f6);border:1px solid var(--line);
+    box-shadow:var(--shadow)}
+  .scrapintro .row{display:flex;align-items:center;justify-content:center;gap:14px;flex-wrap:wrap;position:relative;z-index:2}
+  .scrapintro .item{width:54px;height:54px;flex:0 0 auto;transform:rotate(var(--r,0deg))}
+  .scrapintro .item svg{width:100%;height:100%;filter:drop-shadow(0 4px 8px rgba(120,60,90,.15))}
+  .scrapintro .tag{font-family:var(--font-disp);font-style:italic;color:var(--accent);font-size:15px;
+    text-align:center;margin-top:10px;position:relative;z-index:2}
+  .scrapintro .tag b{color:var(--teal);font-style:normal}
+  @media(max-width:760px){
+    .scrapintro .item{width:42px;height:42px}
+    .scrapintro .row{gap:9px}
+  }
+
+  /* große Aquarell-Trennbänder zwischen Abschnitten */
+  .scrapdiv{display:flex;align-items:center;gap:12px;margin:26px 0 6px;color:var(--accent-2)}
+  .scrapdiv::before,.scrapdiv::after{content:"";flex:1;height:2px;border-radius:2px;
+    background:repeating-linear-gradient(90deg,var(--line) 0 8px,transparent 8px 14px)}
+  .scrapdiv .ic{width:34px;height:34px;flex:0 0 auto}
+  .scrapdiv .ic svg{width:100%;height:100%}
+
   /* Vorlese-Knopf */
   .speak{margin-left:auto;flex:0 0 auto;width:34px;height:34px;border-radius:50%;border:1px solid var(--line);
     background:#fff;cursor:pointer;display:grid;place-items:center;color:var(--teal)}
@@ -1336,7 +1366,12 @@ const VIG = {
   velo:`<svg viewBox="0 0 64 64" fill="none"><circle cx="18" cy="42" r="11" stroke="#c64b86" stroke-width="1.6"/><circle cx="46" cy="42" r="11" stroke="#c64b86" stroke-width="1.6"/><path d="M18 42 L30 42 L40 26 M30 42 L40 42 M40 26 L46 42" stroke="#7c6bab" stroke-width="1.6"/><path d="M8 30 h8 l-2 8" stroke="#6f9a5b" stroke-width="1.4" fill="#dcebd6"/><circle cx="10" cy="27" r="2" fill="#e08aa9"/><circle cx="14" cy="26" r="2" fill="#f4c97a"/></svg>`,
   photographe:`<svg viewBox="0 0 64 64" fill="none"><circle cx="32" cy="18" r="7" fill="#f3d9c4" stroke="#b07a4a" stroke-width="1.3"/><path d="M20 52 q12 -22 24 0" fill="#7c6bab" stroke="#5b3a52" stroke-width="1.2"/><rect x="26" y="30" width="22" height="14" rx="3" fill="#5b3a52"/><circle cx="37" cy="37" r="5" fill="#c64b86" stroke="#fff" stroke-width="1.4"/><rect x="29" y="27" width="6" height="4" fill="#5b3a52"/></svg>`,
   camera:`<svg viewBox="0 0 64 64" fill="none"><rect x="10" y="22" width="44" height="28" rx="5" fill="#fff" stroke="#c64b86" stroke-width="1.8"/><circle cx="32" cy="36" r="9" fill="#fdeef4" stroke="#7c6bab" stroke-width="1.6"/><circle cx="32" cy="36" r="4" fill="#e08aa9"/><rect x="22" y="17" width="12" height="6" rx="2" fill="#c64b86"/><circle cx="46" cy="28" r="2" fill="#f4c97a"/></svg>`,
-  globe:`<svg viewBox="0 0 64 64" fill="none"><circle cx="28" cy="26" r="13" fill="#dce9f3" stroke="#6f86b8" stroke-width="1.5"/><path d="M28 13 v26 M15 26 h26 M19 18 q9 8 18 0 M19 34 q9 -8 18 0" stroke="#6f86b8" stroke-width="1.1"/><rect x="16" y="44" width="32" height="6" rx="1.5" fill="#c64b86"/><rect x="18" y="50" width="30" height="5" rx="1.5" fill="#e08aa9"/></svg>`
+  globe:`<svg viewBox="0 0 64 64" fill="none"><circle cx="28" cy="26" r="13" fill="#dce9f3" stroke="#6f86b8" stroke-width="1.5"/><path d="M28 13 v26 M15 26 h26 M19 18 q9 8 18 0 M19 34 q9 -8 18 0" stroke="#6f86b8" stroke-width="1.1"/><rect x="16" y="44" width="32" height="6" rx="1.5" fill="#c64b86"/><rect x="18" y="50" width="30" height="5" rx="1.5" fill="#e08aa9"/></svg>`,
+  cafe:`<svg viewBox="0 0 64 64" fill="none"><path d="M14 26 h30 v12 a12 12 0 0 1 -12 12 h-6 a12 12 0 0 1 -12 -12 z" fill="#fff" stroke="#b07a4a" stroke-width="1.6"/><path d="M44 30 h6 a5 5 0 0 1 0 10 h-6" stroke="#b07a4a" stroke-width="1.6" fill="none"/><path d="M22 14 q-3 4 0 8 M30 12 q-3 4 0 8 M38 14 q-3 4 0 8" stroke="#c9a07a" stroke-width="1.4"/><ellipse cx="29" cy="54" rx="18" ry="3" fill="#e08aa9" opacity=".4"/></svg>`,
+  livre:`<svg viewBox="0 0 64 64" fill="none"><path d="M32 18 C24 13 14 13 8 16 V48 C14 45 24 45 32 50 C40 45 50 45 56 48 V16 C50 13 40 13 32 18 Z" fill="#fff8f0" stroke="#b07a4a" stroke-width="1.6"/><path d="M32 18 V50" stroke="#c64b86" stroke-width="1.4"/><path d="M13 24 h12 M13 30 h12 M39 24 h12 M39 30 h12" stroke="#c9b89a" stroke-width="1.2"/></svg>`,
+  coeurfr:`<svg viewBox="0 0 64 64"><defs><clipPath id="hf"><path d="M32 54 C16 42 8 34 8 24 A12 12 0 0 1 32 20 A12 12 0 0 1 56 24 C56 34 48 42 32 54 Z"/></clipPath></defs><g clip-path="url(#hf)"><rect x="0" width="21.3" height="64" fill="#3b5aa8"/><rect x="21.3" width="21.3" height="64" fill="#f2eee6"/><rect x="42.6" width="21.4" height="64" fill="#d04a5a"/></g></svg>`,
+  coeurde:`<svg viewBox="0 0 64 64"><defs><clipPath id="hd"><path d="M32 54 C16 42 8 34 8 24 A12 12 0 0 1 32 20 A12 12 0 0 1 56 24 C56 34 48 42 32 54 Z"/></clipPath></defs><g clip-path="url(#hd)"><rect x="0" width="21.3" height="64" fill="#2a2a2a"/><rect x="21.3" width="21.3" height="64" fill="#d84a4a"/><rect x="42.6" width="21.4" height="64" fill="#e3b23c"/></g></svg>`,
+  trepied:`<svg viewBox="0 0 64 64" fill="none"><rect x="22" y="14" width="20" height="12" rx="2" fill="#5b3a52"/><circle cx="32" cy="20" r="4" fill="#e08aa9" stroke="#fff" stroke-width="1.2"/><path d="M32 26 L20 52 M32 26 L44 52 M32 26 L32 50" stroke="#7c6bab" stroke-width="1.8"/></svg>`
 };
 const MOTTOS = {
   studio:    {vig:"camera",      fr:"Capture la lumière",           de:"Fang das Licht ein"},
@@ -1362,6 +1397,46 @@ Object.keys(MOTTOS).forEach(tab=>{
     panel.insertBefore(band, panel.firstChild);
   }
 });
+
+/* ---- Intro-Collage über den Onglets (la vie d'Elisa) ---- */
+(function(){
+  const nav=document.querySelector('nav.tabs');
+  if(!nav) return;
+  const intro=document.createElement('div');
+  intro.className='scrapintro';
+  const items=[
+    {v:"coeurfr",r:-8},{v:"eiffel",r:4},{v:"lavande",r:-5},{v:"camera",r:6},
+    {v:"saarbruecken",r:-4},{v:"velo",r:5},{v:"montpellier",r:-6},{v:"coeurde",r:7}
+  ];
+  intro.innerHTML=`<div class="row">${items.map(i=>`<div class="item" style="--r:${i.r}deg">${VIG[i.v]}</div>`).join("")}</div>
+    <div class="tag">De St-Avold à Montpellier, de Paris à Sarrebruck — <b>la passion d'Elisa</b> ♥</div>`;
+  nav.parentNode.insertBefore(intro, nav);
+})();
+
+/* ---- verteilte Streumotive pro Reiter (Scrapbook) ---- */
+const SCATTER = {
+  studio:   [["lavande",6,82,70,-12],["coeurfr",80,8,42,10]],
+  compose:  [["livre",4,70,76,-8],["cafe",82,12,60,8]],
+  terrain:  [["eiffel",3,30,70,-6],["saarbruecken",84,72,78,6],["lavande",70,4,48,12]],
+  exercices:[["livre",6,12,66,-10],["coeurde",82,78,46,8]],
+  camera:   [["trepied",84,8,70,9],["lavande",2,74,64,-8]],
+  studio2:  [["velo",80,76,84,7],["cafe",4,12,56,-9]]
+};
+Object.keys(SCATTER).forEach(tab=>{
+  const panel=document.getElementById(tab);
+  if(!panel) return;
+  SCATTER[tab].forEach(([v,left,top,size,rot])=>{
+    const s=document.createElement('div');
+    s.className='scatter';
+    s.style.left=left+'%'; s.style.top=top+'%';
+    s.style.width=size+'px'; s.style.height=size+'px';
+    s.style.transform='rotate('+rot+'deg)';
+    s.innerHTML=VIG[v]||'';
+    panel.appendChild(s);
+  });
+});
+
+/* dezente Lavendel-Eckdeko (nur Desktop/Tablet) */
 const decoTL=document.createElement('div'); decoTL.className='corner-deco tl';
 decoTL.innerHTML=VIG.lavande; document.body.appendChild(decoTL);
 const decoBR=document.createElement('div'); decoBR.className='corner-deco br';
