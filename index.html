@@ -352,6 +352,68 @@
 
   @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 
+  /* ===== Intro animé (au démarrage) ===== */
+  .intro{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;
+    background:
+      radial-gradient(700px 500px at 80% 10%, #fbdce8 0%, transparent 55%),
+      radial-gradient(600px 460px at 10% 90%, #e4e0f4 0%, transparent 50%),
+      #f7f0e3;
+    opacity:1;transition:opacity .5s ease}
+  .intro.hide{opacity:0;pointer-events:none}
+  .intro-card{position:relative;max-width:460px;width:88%;text-align:center;padding:8px 18px 26px}
+  .intro-close{position:absolute;top:-2px;right:-2px;width:40px;height:40px;border-radius:50%;
+    border:1px solid var(--line);background:#fff;color:var(--muted);cursor:pointer;font-size:20px;
+    display:grid;place-items:center;line-height:1}
+  .intro-close:hover{color:var(--accent);border-color:var(--accent)}
+  .intro-row{display:flex;justify-content:center;gap:8px;flex-wrap:wrap;margin:6px 0 4px}
+  .intro-row .it{width:46px;height:46px;opacity:0;transform:translateY(12px) rotate(var(--r,0deg));
+    animation:pop .5s ease forwards;animation-delay:var(--d,0s)}
+  @keyframes pop{to{opacity:1;transform:translateY(0) rotate(var(--r,0deg))}}
+  .intro h2{font-family:var(--font-disp);font-style:italic;font-size:30px;margin:14px 0 2px;
+    background:linear-gradient(100deg,var(--accent),var(--accent-2) 55%,var(--gold));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+  .intro .sub{color:var(--muted);font-size:15px;margin:0 0 6px}
+  .intro .ded{font-family:var(--font-disp);font-style:italic;color:var(--accent);font-size:15px;margin:10px 0 18px}
+  .intro .start{font-family:var(--font-body);font-weight:700;font-size:16px;color:#fff;border:none;cursor:pointer;
+    border-radius:24px;padding:13px 28px;background:linear-gradient(100deg,var(--accent),var(--accent-2));
+    box-shadow:var(--shadow)}
+  .intro .start:hover{filter:brightness(1.06)}
+  .intro .noshow{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:16px;
+    font-size:13.5px;color:var(--muted);cursor:pointer}
+  .intro .noshow input{width:18px;height:18px;accent-color:var(--teal)}
+
+  /* ===== Bouton d'aide (toujours visible) ===== */
+  .helpfab{position:fixed;right:16px;bottom:16px;z-index:900;width:52px;height:52px;border-radius:50%;
+    border:none;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--teal));color:#fff;
+    font-size:24px;display:grid;place-items:center;box-shadow:0 6px 18px -6px rgba(120,40,90,.55)}
+  .helpfab:hover{filter:brightness(1.08)}
+  .helpfab:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+  @media(max-width:760px){.helpfab{width:48px;height:48px;right:12px;bottom:12px}}
+
+  /* ===== Panneau d'aide ===== */
+  .helpwrap{position:fixed;inset:0;z-index:950;display:none}
+  .helpwrap.open{display:block}
+  .helpwrap .scrim{position:absolute;inset:0;background:rgba(60,30,55,.4)}
+  .helppanel{position:absolute;right:0;top:0;bottom:0;width:min(440px,92%);background:var(--paper);
+    box-shadow:-10px 0 40px -10px rgba(80,40,70,.5);overflow-y:auto;padding:20px 20px 40px;
+    transform:translateX(100%);transition:transform .35s ease}
+  .helpwrap.open .helppanel{transform:none}
+  .helppanel h2{font-family:var(--font-disp);font-style:italic;font-size:26px;margin:0 0 4px;color:var(--accent)}
+  .helppanel .hsub{color:var(--muted);font-size:14px;margin:0 0 18px}
+  .helppanel .hclose{position:absolute;top:14px;right:14px;width:38px;height:38px;border-radius:50%;
+    border:1px solid var(--line);background:#fff;cursor:pointer;font-size:18px;color:var(--muted)}
+  .helppanel .hclose:hover{color:var(--accent);border-color:var(--accent)}
+  .helpsec{background:#fff;border:1px solid var(--line);border-radius:14px;padding:14px 16px;margin-bottom:14px;box-shadow:var(--shadow)}
+  .helpsec h3{font-family:var(--font-disp);font-size:18px;margin:0 0 8px;display:flex;align-items:center;gap:9px}
+  .helpsec h3 .hi{width:26px;height:26px;flex:0 0 auto}
+  .helpsec p{margin:0 0 8px;font-size:14.5px;color:#2a261f}
+  .helpsec ul{margin:0;padding-left:18px;font-size:14.5px;color:#2a261f}
+  .helpsec li{margin-bottom:6px}
+  .helpsec .toggle{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:14.5px}
+  .helpsec .toggle button{font-family:var(--font-body);font-weight:700;font-size:13.5px;cursor:pointer;
+    border:1px solid var(--accent);background:#fff;color:var(--accent);border-radius:20px;padding:8px 14px}
+  .helpsec .toggle button:hover{background:var(--accent);color:#fff}
+
   /* ===== Lumière : live + détective ===== */
   .lum-stage{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
   .lum-view{position:relative;width:100%;aspect-ratio:4/3;border-radius:14px;overflow:hidden;
@@ -1441,6 +1503,121 @@ const decoTL=document.createElement('div'); decoTL.className='corner-deco tl';
 decoTL.innerHTML=VIG.lavande; document.body.appendChild(decoTL);
 const decoBR=document.createElement('div'); decoBR.className='corner-deco br';
 decoBR.innerHTML=VIG.lavande; document.body.appendChild(decoBR);
+
+/* ============ Intro animé + Aide ============ */
+// Einstellung merken (funktioniert online/als Datei; in der Vorschau ohne Speicher: einfach jedes Mal zeigen)
+function prefGet(k){ try{ return localStorage.getItem(k); }catch(e){ return null; } }
+function prefSet(k,v){ try{ localStorage.setItem(k,v); }catch(e){} }
+
+/* ---- Intro ---- */
+function buildIntro(){
+  const intro=document.createElement('div');
+  intro.className='intro'; intro.id='intro';
+  const motifs=[
+    {v:"coeurfr",r:-8},{v:"camera",r:5},{v:"eiffel",r:-4},
+    {v:"lavande",r:6},{v:"montpellier",r:-5},{v:"velo",r:4},{v:"coeurde",r:-7}
+  ];
+  intro.innerHTML=`
+    <div class="intro-card">
+      <button class="intro-close" id="introX" aria-label="Fermer">✕</button>
+      <div class="intro-row">
+        ${motifs.map((m,i)=>`<div class="it" style="--r:${m.r}deg;--d:${0.08*i}s">${VIG[m.v]}</div>`).join("")}
+      </div>
+      <h2>Bonjour Elisa !</h2>
+      <p class="sub">Bienvenue dans ton atelier photo · Willkommen in deinem Foto-Atelier</p>
+      <p class="ded">« Crois en toi. Suis tes rêves. » — ton Papa ♥</p>
+      <button class="start" id="introStart">Commencer ✨</button>
+      <label class="noshow"><input type="checkbox" id="introNoShow"> Ne plus afficher au démarrage</label>
+    </div>`;
+  document.body.appendChild(intro);
+  function close(){
+    intro.classList.add('hide');
+    if(document.getElementById('introNoShow').checked) prefSet('elisa_intro','off');
+    setTimeout(()=>intro.remove(),550);
+  }
+  intro.querySelector('#introStart').addEventListener('click',close);
+  intro.querySelector('#introX').addEventListener('click',close);
+}
+if(prefGet('elisa_intro')!=='off'){ buildIntro(); }
+
+/* ---- Bouton d'aide flottant ---- */
+const fab=document.createElement('button');
+fab.className='helpfab'; fab.setAttribute('aria-label',"Aide"); fab.innerHTML='?';
+document.body.appendChild(fab);
+
+/* ---- Panneau d'aide ---- */
+const helpWrap=document.createElement('div');
+helpWrap.className='helpwrap'; helpWrap.id='helpwrap';
+helpWrap.innerHTML=`
+  <div class="scrim" id="helpScrim"></div>
+  <div class="helppanel">
+    <button class="hclose" id="helpClose" aria-label="Fermer">✕</button>
+    <h2>Aide &amp; mode d'emploi</h2>
+    <p class="hsub">Tout pour bien utiliser ton atelier photo, Elisa ♥</p>
+
+    <div class="helpsec">
+      <div class="toggle">
+        <span>Revoir l'animation d'accueil au prochain démarrage ?</span>
+        <button id="introReset">Réactiver</button>
+      </div>
+    </div>
+
+    <div class="helpsec">
+      <h3><span class="hi">${VIG.camera}</span>Comment ça marche ?</h3>
+      <p>L'application a 6 onglets, glisse-les du doigt en haut :</p>
+      <ul>
+        <li><b>Le triangle</b> — joue avec ouverture, vitesse et ISO et regarde l'image changer.</li>
+        <li><b>Composer</b> — les règles pour bien cadrer (règle des tiers, lignes, lumière).</li>
+        <li><b>Sur le terrain</b> — quel réglage pour quelle scène.</li>
+        <li><b>Exercices</b> — des missions à réussir + analyse de ta vraie photo.</li>
+        <li><b>Ma caméra</b> — où sont les boutons de ton Canon, étape par étape.</li>
+        <li><b>Lumière</b> — le posemètre en direct et le détective photo.</li>
+      </ul>
+      <p>Le bouton 🔊 lit les textes à voix haute. Le bouton 🎥 ouvre une vidéo en français.</p>
+    </div>
+
+    <div class="helpsec">
+      <h3><span class="hi">${VIG.eiffel}</span>Ton Canon EOS 2000D</h3>
+      <ul>
+        <li><b>Molette des modes :</b> M (manuel, pour apprendre), Av (tu choisis l'ouverture), Tv (tu choisis la vitesse), P (assisté).</li>
+        <li><b>Déclencheur :</b> appuie à moitié pour la mise au point (bip = net), à fond pour la photo.</li>
+        <li><b>Bague de zoom :</b> 55 mm = sujet rapproché + fond flou ; 18 mm = grand angle (paysage).</li>
+        <li><b>AF/MF :</b> laisse sur AF (mise au point automatique).</li>
+        <li><b>Écran :</b> vise le 0 sur la barre d'exposition pour une lumière juste.</li>
+        <li><b>ISO :</b> 100 en plein jour, monte à 1600–3200 si c'est sombre (un peu de grain, mais net).</li>
+      </ul>
+    </div>
+
+    <div class="helpsec">
+      <h3><span class="hi">${VIG.photographe}</span>Mes 5 conseils</h3>
+      <ul>
+        <li>La <b>lumière</b> fait tout : la plus belle est tôt le matin ou en fin de journée (l'heure dorée).</li>
+        <li>Place ton sujet sur les <b>lignes des tiers</b>, pas au centre.</li>
+        <li>Pour un <b>portrait</b> : grande ouverture (f/3.5) et mise au point sur l'œil.</li>
+        <li>Pour <b>figer un mouvement</b> : vitesse rapide (1/500 s ou plus).</li>
+        <li>Le plus important : <b>prends beaucoup de photos</b> et amuse-toi. C'est en pratiquant qu'on progresse !</li>
+      </ul>
+    </div>
+
+    <div class="helpsec">
+      <h3><span class="hi">${VIG.velo}</span>Le live ne marche pas ?</h3>
+      <p>Le posemètre en direct (onglet Lumière) a besoin d'une connexion internet sécurisée. Si tu ouvres l'app comme un simple fichier, utilise plutôt le « Détective photo » juste en dessous — il fonctionne partout.</p>
+    </div>
+
+    <p class="hsub" style="text-align:center;margin-top:18px">Fait avec ♥ pour Elisa · St-Avold</p>
+  </div>`;
+document.body.appendChild(helpWrap);
+
+function openHelp(){ helpWrap.classList.add('open'); }
+function closeHelp(){ helpWrap.classList.remove('open'); }
+fab.addEventListener('click',openHelp);
+helpWrap.querySelector('#helpClose').addEventListener('click',closeHelp);
+helpWrap.querySelector('#helpScrim').addEventListener('click',closeHelp);
+helpWrap.querySelector('#introReset').addEventListener('click',()=>{
+  prefSet('elisa_intro','on');
+  const btn=helpWrap.querySelector('#introReset');
+  btn.textContent='✓ Activé'; btn.disabled=true;
+});
 
 render();
 </script>
